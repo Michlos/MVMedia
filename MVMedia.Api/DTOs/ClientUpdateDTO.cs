@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-using System.ComponentModel.DataAnnotations;
+namespace MVMedia.Api.DTOs;
 
-namespace MVMedia.API.Models;
-
-public class Client
+public class ClientUpdateDTO
 {
+    [Required]
     public int Id { get; set; }
     [Required]
     [MaxLength(200)]
@@ -34,8 +33,5 @@ public class Client
     [RegularExpression(@"^\d{5}-\d{3}$", ErrorMessage = "Invalid Zip Code format. Use XXXXX-XXX.")]
     public string? ZipCode { get; set; }
     public string? Country { get; set; }
-    public DateTime? CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
     public bool IsActive { get; set; }
-
 }

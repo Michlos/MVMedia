@@ -17,6 +17,7 @@ public class MediaRepository : IMediaRepository
 
     public void AddMedia(Media media)
     {
+        media.CreatedAt = DateTime.UtcNow; // Set the creation timestamp
         _context.Medias.Add(media);
     }
     public void UpdateMedia(Media media)

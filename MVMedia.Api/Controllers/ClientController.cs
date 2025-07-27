@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
 
+using Microsoft.AspNetCore.Mvc;
+
+using MVMedia.Api.DTOs;
 using MVMedia.Api.Repositories.Interfaces;
 using MVMedia.API.Models;
 
@@ -9,11 +12,14 @@ namespace MVMedia.Api.Controllers;
 [Route("api/[controller]")]
 public class ClientController : Controller
 {
-    public readonly IClientRepository _clientRepository;
+    private readonly IClientRepository _clientRepository;
+    private readonly IMapper _mapper;
 
-    public ClientController(IClientRepository clientRepository)
+
+    public ClientController(IClientRepository clientRepository, IMapper mapper)
     {
         _clientRepository = clientRepository;
+        _mapper = mapper;
     }
 
    [HttpGet("GetAllClients")]
@@ -21,7 +27,9 @@ public class ClientController : Controller
     {
         // This method should call the repository to get all clients
         // For now, returning an empty list
-        return Ok(await _clientRepository.GetAllClients());
+        var clients = await _clientRepository.GetAllClients();
+        var clientsDTO = _mapper.Map<IEnumerable<ClientGetDTO>>(clients);
+        return Ok(clientsDTO);
 
     }
     [HttpGet("GetClient/{id}")]
@@ -33,20 +41,40 @@ public class ClientController : Controller
         {
             return NotFound($"Client with id {id} not found!");
         }
-        return Ok(client);
+
+        var clientDTO = _mapper.Map<ClientGetDTO>(client);
+        return Ok(clientDTO);
     }
 
 
     [HttpPost]
-    public async Task<ActionResult<Client>> AddClient(Client client)
+    public async Task<ActionResult<Client>> AddClient(ClientAddDTO clientDTO)
     {
         // This method should call the repository to add a new client
         // For now, returning the client as is
+
+        var client = _mapper.Map<Client>(clientDTO);
+
         _clientRepository.AddClient(client);
         if (await _clientRepository.SaveAllAsync())
         {
             return Ok(client);
         }
         return BadRequest("Failed to add client");
+    }
+
+    [HttpPut]
+    public async Task<ActionResult<Client>> UpdateClient([FromBody] ClientUpdateDTO clientDTO)
+    {
+        if(clientDTO.Id == 0)
+            return BadRequest("Is not possible to update a client without an ID");
+        var existingClient = await _clientRepository.GetClientById(clientDTO.Id);
+        if (existingClient == null)
+            return NotFound($"Client with id {clientDTO.Id} not found!");
+        if (clientDTO == null)
+            return BadRequest("Invalid client data");
+        await _clientRepository.UpdateClient(clientDTO);
+        return Ok(clientDTO);
+
     }
 }

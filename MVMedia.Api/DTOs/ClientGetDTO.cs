@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-using System.ComponentModel.DataAnnotations;
+namespace MVMedia.Api.DTOs;
 
-namespace MVMedia.API.Models;
-
-public class Client
+public class ClientGetDTO
 {
     public int Id { get; set; }
     [Required]
@@ -37,5 +35,4 @@ public class Client
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public bool IsActive { get; set; }
-
 }

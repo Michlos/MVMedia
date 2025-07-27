@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
 
+using Microsoft.AspNetCore.Mvc;
+
+using MVMedia.Api.DTOs;
 using MVMedia.Api.Repositories.Interfaces;
 using MVMedia.API.Models;
 
@@ -11,17 +14,22 @@ public class MediaController : Controller
 {
  
     private readonly IMediaRepository _mediaRepository;
+    private readonly IMapper _mapper;
 
-    public MediaController(IMediaRepository mediaRepository)
+    public MediaController(IMediaRepository mediaRepository, IMapper mapper)
     {
         _mediaRepository = mediaRepository;
+        _mapper = mapper;
     }
 
     [HttpGet("GetAllMedia")]
     public async Task<ActionResult<IEnumerable<Media>>> GetAllMedia()
     {
+
+        var medias = await _mediaRepository.GetAllMedia();
+        var mediasDTO = _mapper.Map<IEnumerable<MediaGetDTO>>(medias);
         // This method should call the repository to get all media
-        return Ok(await _mediaRepository.GetAllMedia());
+        return Ok(mediasDTO);
     }
 
     [HttpGet("GetMedia/{id}")]

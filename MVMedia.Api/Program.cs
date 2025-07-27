@@ -6,6 +6,8 @@ using MVMedia.Api.Context;
 using Microsoft.EntityFrameworkCore;
 using MVMedia.Api.Repositories.Interfaces;
 using MVMedia.Api.Repositories;
+using MVMedia.Api.DTOs.Mapping;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,8 @@ builder.Services.AddDbContext<ApiDbContext>(opt => opt.UseNpgsql(PostgreSqlConne
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IMediaRepository, MediaRepository>();
 
+//ADD SERVICES AUTOMAPPER
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<EntitiesToDTOMappingProfile>());
 
 
 //START configuration for JWT authentication
