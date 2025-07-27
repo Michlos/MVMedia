@@ -1,0 +1,31 @@
+﻿using Microsoft.AspNetCore.Mvc;
+
+using System.ComponentModel.DataAnnotations;
+
+namespace MVMedia.API.Models;
+
+public class Media
+{
+    public int Id { get; set; }
+    [Required]
+    [MaxLength(100)]
+    public string Title { get; set; }
+
+    [MaxLength(500)]
+    public string Description { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; }
+    public bool IsActive { get; set; } = true;
+    [Required]
+    [MaxLength(500)]
+    public string MediaUrl { get; set; } // URL to access the media file
+    public string? Notes { get; set; } // Additional notes or comments about the media
+
+    //vincular ao cliente onde o video pertence a um cliente
+    public int ClientId { get; set; }
+    public Client Client { get; set; } // Navigation property to the Client entity
+
+
+
+
+}
