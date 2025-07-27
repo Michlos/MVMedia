@@ -21,6 +21,7 @@ public class ClientRepository : IClientRepository
     }
     public void UpdateClient(Client client)
     {
+        client.UpdatedAt = DateTime.UtcNow;
         _context.Entry(client).State = EntityState.Modified;
     }
 

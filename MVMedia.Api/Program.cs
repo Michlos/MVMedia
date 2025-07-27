@@ -16,6 +16,7 @@ builder.Services.AddDbContext<ApiDbContext>(opt => opt.UseNpgsql(PostgreSqlConne
 
 //DEPENDENCE INJECTION FRO REPOSITORIES
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IMediaRepository, MediaRepository>();
 
 
 
