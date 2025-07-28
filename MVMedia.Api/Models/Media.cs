@@ -13,9 +13,9 @@ public class Media
 
     [MaxLength(500)]
     public string Description { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public bool IsActive { get; set; } = true;
+    public DateTime? CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public bool IsActive { get; set; }
     [Required]
     [MaxLength(500)]
     public string MediaUrl { get; set; } // URL to access the media file
@@ -23,7 +23,7 @@ public class Media
 
     //vincular ao cliente onde o video pertence a um cliente
     public int ClientId { get; set; }
-    public Client Client { get; set; } // Navigation property to the Client entity
+    public virtual Client Client { get; set; } // Navigation property to the Client entity
 
 
 

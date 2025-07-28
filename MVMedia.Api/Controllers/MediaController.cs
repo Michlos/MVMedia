@@ -15,11 +15,13 @@ public class MediaController : Controller
  
     private readonly IMediaRepository _mediaRepository;
     private readonly IMapper _mapper;
+    private readonly IClientRepository _clientRepository;
 
-    public MediaController(IMediaRepository mediaRepository, IMapper mapper)
+    public MediaController(IMediaRepository mediaRepository, IMapper mapper, IClientRepository clientRepository)
     {
         _mediaRepository = mediaRepository;
         _mapper = mapper;
+        _clientRepository = clientRepository;
     }
 
     [HttpGet("GetAllMedia")]
@@ -41,25 +43,32 @@ public class MediaController : Controller
         {
             return NotFound($"Media with id {id} not found!");
         }
-        return Ok(media);
+
+        var mediaDTO = _mapper.Map<MediaGetDTO>(media);
+        return Ok(mediaDTO);
     }
 
-    [HttpGet("GetMediasByClient/{clientId}")]
-    public async Task<ActionResult<IEnumerable<Media>>> GetMediasByClientId(int clientId)
+    [HttpGet("GetMediasByCliente/{id}")]
+    public async Task<ActionResult<ClientWithMediaDTO>> GetClientWithMedias(int id)
     {
-        // This method should call the repository to get media by client ID
-        var medias = await _mediaRepository.GetMediaByClientId(clientId);
-        if (medias == null || !medias.Any())
+        var client = await _clientRepository.GetClientById(id);
+        var medias = await _mediaRepository.GetMediaByClientId(id);
+
+        var dto = new ClientWithMediaDTO
         {
-            return NotFound($"No media found for client with id {clientId}!");
-        }
-        return Ok(medias);
+            Client = _mapper.Map<ClientSummaryDTO>(client),
+            Medias = _mapper.Map<List<MediaListItemDTO>>(medias)
+        };
+
+        return Ok(dto);
     }
 
     [HttpPost]
-    public async Task<ActionResult<Media>> AddMedia(Media media)
+    public async Task<ActionResult<Media>> AddMedia(MediaAddDTO mediaDTO)
     {
         // This method should call the repository to add a new media
+        var media = _mapper.Map<Media>(mediaDTO);
+                
         _mediaRepository.AddMedia(media);
         if (await _mediaRepository.SaveAllAsync())
         {

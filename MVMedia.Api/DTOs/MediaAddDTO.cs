@@ -4,18 +4,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVMedia.Api.DTOs;
 
-public class MediaGetDTO
+public class MediaAddDTO
 {
-    public int Id { get; set; }
+    
     [Required]
     [MaxLength(100)]
     public string Title { get; set; }
 
     [MaxLength(500)]
-    public string Description { get; set; }
-    public DateTime? CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
-    public bool IsActive { get; set; } = true;
+    public string? Description { get; set; }
+    public bool IsActive { get; set; }
     [Required]
     [MaxLength(500)]
     public string MediaUrl { get; set; } 
