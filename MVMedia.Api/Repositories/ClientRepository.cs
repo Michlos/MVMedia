@@ -25,39 +25,38 @@ public class ClientRepository : IClientRepository
     }
     public async Task<Client> UpdateClient(ClientUpdateDTO clientDTO)
     {
-        Client existinggClient = await _context.Clients.AsNoTracking().FirstOrDefaultAsync(c => c.Id == clientDTO.Id);
-        if (existinggClient == null)
+        var existingClient = await _context.Clients.FirstOrDefaultAsync(c => c.Id == clientDTO.Id);
+        if (existingClient == null)
             throw new ArgumentException($"Client with id {clientDTO.Id} not found.");
-        
-        var entry = _context.Attach(existinggClient);
-        
-        if(clientDTO.Name is not null && clientDTO.Name != existinggClient.Name)
-            entry.Property(c => c.Name).IsModified = true;
-        if(clientDTO.CPF is not null && clientDTO.CPF != existinggClient.CPF)
-            entry.Property(c => c.CPF).IsModified = true;
-        if(clientDTO.CNPJ is not null && clientDTO.CNPJ != existinggClient.CNPJ)
-            entry.Property(c => c.CNPJ).IsModified = true;
-        if(clientDTO.Email is not null && clientDTO.Email != existinggClient.Email)
-            entry.Property(c => c.Email).IsModified = true;
-        if(clientDTO.Phone is not null && clientDTO.Phone != existinggClient.Phone)
-            entry.Property(c => c.Phone).IsModified = true;
-        if(clientDTO.Address is not null && clientDTO.Address != existinggClient.Address)
-            entry.Property(c => c.Address).IsModified = true;
-        if(clientDTO.City is not null && clientDTO.City != existinggClient.City)
-            entry.Property(c => c.City).IsModified = true;
-        if(clientDTO.State is not null && clientDTO.State != existinggClient.State)
-            entry.Property(c => c.State).IsModified = true;
-        if(clientDTO.ZipCode is not null && clientDTO.ZipCode != existinggClient.ZipCode)
-            entry.Property(c => c.ZipCode).IsModified = true;
-        if(clientDTO.Country is not null && clientDTO.Country != existinggClient.Country)
-            entry.Property(c => c.Country).IsModified = true;
-        if(clientDTO.IsActive != existinggClient.IsActive)
-            entry.Property(c => c.IsActive).IsModified = true;
 
-        existinggClient.UpdatedAt = DateTime.UtcNow;
+        // Atualize as propriedades diretamente
+        if (clientDTO.Name is not null && clientDTO.Name != existingClient.Name)
+            existingClient.Name = clientDTO.Name;
+        if (clientDTO.CPF is not null && clientDTO.CPF != existingClient.CPF)
+            existingClient.CPF = clientDTO.CPF;
+        if (clientDTO.CNPJ is not null && clientDTO.CNPJ != existingClient.CNPJ)
+            existingClient.CNPJ = clientDTO.CNPJ;
+        if (clientDTO.Email is not null && clientDTO.Email != existingClient.Email)
+            existingClient.Email = clientDTO.Email;
+        if (clientDTO.Phone is not null && clientDTO.Phone != existingClient.Phone)
+            existingClient.Phone = clientDTO.Phone;
+        if (clientDTO.Address is not null && clientDTO.Address != existingClient.Address)
+            existingClient.Address = clientDTO.Address;
+        if (clientDTO.City is not null && clientDTO.City != existingClient.City)
+            existingClient.City = clientDTO.City;
+        if (clientDTO.State is not null && clientDTO.State != existingClient.State)
+            existingClient.State = clientDTO.State;
+        if (clientDTO.ZipCode is not null && clientDTO.ZipCode != existingClient.ZipCode)
+            existingClient.ZipCode = clientDTO.ZipCode;
+        if (clientDTO.Country is not null && clientDTO.Country != existingClient.Country)
+            existingClient.Country = clientDTO.Country;
+        if (clientDTO.IsActive != existingClient.IsActive)
+            existingClient.IsActive = clientDTO.IsActive;
+
+        existingClient.UpdatedAt = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();
-        return existinggClient;
+        return existingClient;
     }
 
     public async Task<IEnumerable<Client>> GetAllClients()
