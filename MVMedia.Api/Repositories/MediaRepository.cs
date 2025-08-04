@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using MVMedia.Api.Context;
+using MVMedia.Api.DTOs;
 using MVMedia.Api.Repositories.Interfaces;
 using MVMedia.API.Models;
 
@@ -20,10 +21,27 @@ public class MediaRepository : IMediaRepository
         //media.CreatedAt = DateTime.UtcNow; // Set the creation timestamp
         _context.Medias.Add(media);
     }
-    public void UpdateMedia(Media media)
+    public async Task<Media> UpdateMedia(MediaUpdateDTO mediaDTO)
     {
-        media.UpdatedAt = DateTime.UtcNow; // Update the timestamp
-        _context.Medias.Entry(media).State = EntityState.Modified;
+        var existingMedia = await _context.Medias.FirstOrDefaultAsync(m => m.Id == mediaDTO.Id);
+        if (existingMedia == null)
+            throw new ArgumentException($"Media with id {mediaDTO.Id} not found.");
+
+        // Atualiza os campos conforme necessário
+        if (mediaDTO.Title is not null && mediaDTO.Title != existingMedia.Title)
+            existingMedia.Title = mediaDTO.Title;
+        if (mediaDTO.Description is not null && mediaDTO.Description != existingMedia.Description)
+            existingMedia.Description = mediaDTO.Description;
+        if (mediaDTO.IsActive != existingMedia.IsActive)
+            existingMedia.IsActive = mediaDTO.IsActive;
+        if (mediaDTO.MediaUrl is not null && mediaDTO.MediaUrl != existingMedia.MediaUrl)
+            existingMedia.MediaUrl = mediaDTO.MediaUrl;
+        if (mediaDTO.Notes is not null && mediaDTO.Notes != existingMedia.Notes)
+            existingMedia.Notes = mediaDTO.Notes;
+
+        existingMedia.UpdatedAt = DateTime.UtcNow;
+        await _context.SaveChangesAsync();
+        return existingMedia;
     }
 
     public async Task<IEnumerable<Media>> GetAllMedia()
@@ -47,4 +65,5 @@ public class MediaRepository : IMediaRepository
         //SaveChanges return 0 if error changes in database
         return await _context.SaveChangesAsync() > 0;
     }
+
 }

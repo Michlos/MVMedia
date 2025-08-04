@@ -76,5 +76,18 @@ public class MediaController : Controller
         }
         return BadRequest("Failed to add media");
     }
+    [HttpPut]
+    public async Task<ActionResult<Media>> UpdateMedia([FromBody] MediaUpdateDTO mediaDTO)
+    {
+        if(mediaDTO.Id <= 0)
+            return BadRequest("Is not possible to update a media without an ID");
+        var mediaExistent = await _mediaRepository.GetMediaById(mediaDTO.Id);
+        if (mediaExistent == null)
+            return NotFound($"Media with id {mediaDTO.Id} not found!");
+        if(mediaDTO == null)
+            return BadRequest("Invalid media data");
+        await _mediaRepository.UpdateMedia(mediaDTO);
+        return Ok(mediaDTO);
+    }
 
 }
