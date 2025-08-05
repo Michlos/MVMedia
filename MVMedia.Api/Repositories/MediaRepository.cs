@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 
 using MVMedia.Api.Context;
 using MVMedia.Api.DTOs;
@@ -16,10 +17,12 @@ public class MediaRepository : IMediaRepository
         _context = context;
     }
 
-    public void AddMedia(Media media)
+    public async Task<Media> AddMedia(Media media)
     {
-        //media.CreatedAt = DateTime.UtcNow; // Set the creation timestamp
-        _context.Medias.Add(media);
+        media.CreatedAt = DateTime.UtcNow;
+        await _context.Medias.AddAsync(media);
+        await _context.SaveChangesAsync();
+        return media;
     }
     public async Task<Media> UpdateMedia(MediaUpdateDTO mediaDTO)
     {

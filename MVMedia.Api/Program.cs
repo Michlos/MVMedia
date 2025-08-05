@@ -21,6 +21,7 @@ builder.Services.AddDbContext<ApiDbContext>(opt => opt.UseNpgsql(PostgreSqlConne
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IMediaRepository, MediaRepository>();
 builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IMediaSerivce, MediaService>();
 
 //ADD SERVICES AUTOMAPPER
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<EntitiesToDTOMappingProfile>());

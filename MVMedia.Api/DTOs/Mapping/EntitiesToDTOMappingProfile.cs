@@ -39,7 +39,8 @@ public class EntitiesToDTOMappingProfile : Profile
         //TO SUMMARY CLIENTE FOR MEDIAS LIST
         CreateMap<Media, MediaListItemDTO>();
         CreateMap<MediaUpdateDTO, Media>()
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ReverseMap();
 
     }
 }

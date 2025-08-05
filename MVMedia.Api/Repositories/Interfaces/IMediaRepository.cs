@@ -5,7 +5,7 @@ namespace MVMedia.Api.Repositories.Interfaces;
 
 public interface IMediaRepository
 {
-    void AddMedia(Media media);
+    Task<Media> AddMedia(Media media);
     Task<Media> UpdateMedia(MediaUpdateDTO media);
     Task<IEnumerable<Media>> GetAllMedia();
     Task<Media> GetMediaById(int id);
