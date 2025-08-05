@@ -18,10 +18,12 @@ public class ClientRepository : IClientRepository
         _context = context;
     }
 
-    public void AddClient(Client client)
+    public async Task<Client> AddClient(Client client)
     {
         client.CreatedAt = DateTime.UtcNow; // Set the creation timestamp
-        _context.Clients.Add(client);
+        _context.Clients.Add(client); // Adiciona o cliente ao contexto
+        await _context.SaveChangesAsync(); // Salva as alterações no banco de dados
+        return client; // Retorna o cliente adicionado
     }
     public async Task<Client> UpdateClient(ClientUpdateDTO clientDTO)
     {

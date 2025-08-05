@@ -16,11 +16,13 @@ public class EntitiesToDTOMappingProfile : Profile
         CreateMap<Client, ClientGetDTO>().ReverseMap();
         //TO UPDATE
         CreateMap<ClientUpdateDTO, Client>()
-            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore());
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ReverseMap();
         //TO ADD
         CreateMap<ClientAddDTO, Client>()
             .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-            .ForMember(dest => dest.Id, opt => opt.Ignore());
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ReverseMap();
         //TO SUMMARY CLIENTE FOR MEDIAS LIST
         CreateMap<Client, ClientSummaryDTO>();
 

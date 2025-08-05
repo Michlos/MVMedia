@@ -5,7 +5,7 @@ namespace MVMedia.Api.Repositories.Interfaces;
 
 public interface IClientRepository
 {
-    void AddClient(Client client);
+    Task<Client> AddClient(Client client);
     Task<Client> UpdateClient(ClientUpdateDTO client);
     Task<IEnumerable<Client>> GetAllClients();
     Task<Client> GetClientById(int id);

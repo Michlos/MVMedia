@@ -7,7 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using MVMedia.Api.Repositories.Interfaces;
 using MVMedia.Api.Repositories;
 using MVMedia.Api.DTOs.Mapping;
-using Microsoft.Extensions.DependencyInjection;
+using MVMedia.Api.Services;
+using MVMedia.Api.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddDbContext<ApiDbContext>(opt => opt.UseNpgsql(PostgreSqlConne
 //DEPENDENCE INJECTION FRO REPOSITORIES
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IMediaRepository, MediaRepository>();
+builder.Services.AddScoped<IClientService, ClientService>();
 
 //ADD SERVICES AUTOMAPPER
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<EntitiesToDTOMappingProfile>());
