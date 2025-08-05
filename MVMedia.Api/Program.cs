@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 var PostgreSqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApiDbContext>(opt => opt.UseNpgsql(PostgreSqlConnection));
 
-//DEPENDENCE INJECTION FRO REPOSITORIES
+//DEPENDENCE INJECTION FRO REPOSITORIES AND SERVICES
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IMediaRepository, MediaRepository>();
 builder.Services.AddScoped<IClientService, ClientService>();

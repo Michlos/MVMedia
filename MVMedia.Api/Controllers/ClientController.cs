@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 using MVMedia.Api.DTOs;
-using MVMedia.Api.Repositories.Interfaces;
 using MVMedia.Api.Services.Interfaces;
 using MVMedia.API.Models;
 
@@ -24,8 +21,6 @@ public class ClientController : Controller
     [HttpGet("GetAllClients")]
     public async Task<ActionResult<IEnumerable<Client>>> GetAllClients()
     {
-        // This method should call the repository to get all clients
-        // For now, returning an empty list
         var clients = await _clientService.GetAllClients();
         return Ok(clients);
 
@@ -33,7 +28,6 @@ public class ClientController : Controller
     [HttpGet("GetClient/{id}")]
     public async Task<ActionResult<Client>> GetClientById(int id)
     {
-        // This method should call the repository to get a client by ID
         var clientUpdated = await _clientService.GetClientById(id);
         if (clientUpdated == null)
         {
