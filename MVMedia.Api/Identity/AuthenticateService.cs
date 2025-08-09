@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 
 using MVMedia.Api.Context;
 using MVMedia.Api.Models;
+using MVMedia.Api.Services;
 using MVMedia.Api.Services.Interfaces;
 
 using System.IdentityModel.Tokens.Jwt;
@@ -84,7 +85,15 @@ public class AuthenticateService : IAuthtenticate
     {
         var user = await _context.Users.Where(x => x.Login == username).FirstOrDefaultAsync();
         if (user == null) return false;
+        
         return true;
+    }
+
+    public async Task<bool> UserIsActive(string userName)
+    {
+        var user = await _context.Users.Where(x => x.Login == userName).FirstOrDefaultAsync();
+        if (user == null) return false;
+        return user.IsActive;
     }
 
     public async Task<User> GetUserByUserName(string username)
@@ -93,5 +102,6 @@ public class AuthenticateService : IAuthtenticate
             .Where(x => x.Login == username)
             .FirstOrDefaultAsync();
     }
+
 }
 

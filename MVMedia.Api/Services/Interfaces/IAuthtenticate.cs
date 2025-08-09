@@ -10,4 +10,6 @@ public interface IAuthtenticate
     public Task<User> GetUserByUserName(string username);
     public string GenerateToken(int id, string username);
     (byte[] hash, byte[] salt) HashPassword(string password);
+    Task<bool> UserIsActive(string loginUser);
+
 }

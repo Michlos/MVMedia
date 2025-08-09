@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using MVMedia.Api.DTOs;
+using MVMedia.Api.Identity;
 using MVMedia.Api.Models;
 using MVMedia.Api.Services.Interfaces;
 
@@ -8,6 +10,7 @@ namespace MVMedia.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+
 public class UserController : Controller
 {
     
@@ -25,8 +28,12 @@ public class UserController : Controller
    
 
     [HttpPost("register")]
+    [Authorize]
     public async Task<ActionResult<UserToken>> AddUser(UserDTO userDTO)
     {
+        if (!await _userService.IsAdmin(User.GetUserId()))
+            return Unauthorized("You are not authorized to access this resource");
+
         if (userDTO == null)
             return BadRequest("Invalid user data.");
         
@@ -48,6 +55,9 @@ public class UserController : Controller
         var exists = await _authenticateService.UserExists(loginModel.Username);
         if (!exists) return Unauthorized("User not found");
 
+        var isActive = await _authenticateService.UserIsActive(loginModel.Username);
+        if (!isActive) return Unauthorized("User is not active");
+
         var result = await _authenticateService.Autheniticate(loginModel.Username, loginModel.Password);
         if (!result) return Unauthorized("User or Password invalid");
 
@@ -60,4 +70,5 @@ public class UserController : Controller
             Token = token
         };
     }
+
 }

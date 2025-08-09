@@ -51,4 +51,16 @@ public class UserService : IUserService
         var userUpdated = await _userRepository.Update(user);
         return _mapper.Map<UserDTO>(userUpdated);
     }
+
+    public async Task<bool> UserAutorized(int userId)
+    {
+        var logedUser = await _userRepository.GetUser(userId);
+        return logedUser != null && logedUser.IsActive;
+    }
+
+    public async Task<bool> IsAdmin(int userId)
+    {
+        var logedUser = await _userRepository.GetUser(userId);
+        return logedUser != null && logedUser.IsAdmin && logedUser.IsActive;
+    }
 }

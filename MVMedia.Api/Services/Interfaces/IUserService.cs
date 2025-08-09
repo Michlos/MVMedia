@@ -8,4 +8,6 @@ public interface IUserService
     Task<UserDTO> Update(UserDTO userDTO);
     Task<UserDTO> GetUser(int id);
     Task<IEnumerable<UserDTO>> GetAllUsers();
+    Task<bool> UserAutorized(int userId);
+    Task<bool> IsAdmin(int userId);
 }

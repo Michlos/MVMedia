@@ -27,8 +27,9 @@ public class ClientController : Controller
     [HttpGet("GetAllClients")]
     public async Task<ActionResult<IEnumerable<Client>>> GetAllClients()
     {
+        
 
-        if (!await IsUserAuthorized())
+        if (!await _userService.IsAdmin(User.GetUserId()))
             return Unauthorized("You are not authorized to access this resource");
 
         var clients = await _clientService.GetAllClients();
@@ -38,7 +39,7 @@ public class ClientController : Controller
     [HttpGet("GetClient/{id}")]
     public async Task<ActionResult<Client>> GetClientById(int id)
     {
-        if (!await IsUserAuthorized())
+        if (!await _userService.IsAdmin(User.GetUserId()))
             return Unauthorized("You are not authorized to access this resource");
 
         var clientUpdated = await _clientService.GetClientById(id);
@@ -54,7 +55,7 @@ public class ClientController : Controller
     public async Task<ActionResult<Client>> AddClient(ClientAddDTO clientDTO)
     {
         
-        if (!await IsUserAuthorized())
+        if (!await _userService.IsAdmin(User.GetUserId()))
             return Unauthorized("You are not authorized to access this resource");
 
 
@@ -69,7 +70,7 @@ public class ClientController : Controller
     [HttpPut]
     public async Task<ActionResult<Client>> UpdateClient([FromBody] ClientUpdateDTO clientDTO)
     {
-        if (!await IsUserAuthorized())
+        if (!await _userService.IsAdmin(User.GetUserId()))
             return Unauthorized("You are not authorized to access this resource");
 
         if (clientDTO.Id == 0)
@@ -87,11 +88,6 @@ public class ClientController : Controller
 
     }
 
-    private async Task<bool> IsUserAuthorized()
-    {
-        var logedUser = await _userService.GetUser(User.GetUserId());
-        return logedUser != null && logedUser.IsAdmin;
-    }
 
 
 }
