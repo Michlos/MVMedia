@@ -21,14 +21,14 @@ public class ClientController : Controller
     {
         _clientService = clientService;
         _userService = userService;
+
     }
 
     [HttpGet("GetAllClients")]
     public async Task<ActionResult<IEnumerable<Client>>> GetAllClients()
     {
-        
-        var logedUser = await _userService.GetUser(User.GetUserId());
-        if (!logedUser.IsAdmin)
+
+        if (!await IsUserAuthorized())
             return Unauthorized("You are not authorized to access this resource");
 
         var clients = await _clientService.GetAllClients();
@@ -38,6 +38,9 @@ public class ClientController : Controller
     [HttpGet("GetClient/{id}")]
     public async Task<ActionResult<Client>> GetClientById(int id)
     {
+        if (!await IsUserAuthorized())
+            return Unauthorized("You are not authorized to access this resource");
+
         var clientUpdated = await _clientService.GetClientById(id);
         if (clientUpdated == null)
         {
@@ -50,6 +53,10 @@ public class ClientController : Controller
     [HttpPost]
     public async Task<ActionResult<Client>> AddClient(ClientAddDTO clientDTO)
     {
+        
+        if (!await IsUserAuthorized())
+            return Unauthorized("You are not authorized to access this resource");
+
 
         var clientAdded = await _clientService.AddClient(clientDTO);
         if (clientAdded == null)
@@ -62,15 +69,29 @@ public class ClientController : Controller
     [HttpPut]
     public async Task<ActionResult<Client>> UpdateClient([FromBody] ClientUpdateDTO clientDTO)
     {
+        if (!await IsUserAuthorized())
+            return Unauthorized("You are not authorized to access this resource");
+
         if (clientDTO.Id == 0)
             return BadRequest("Is not possible to update a client without an ID");
+
         var existingClient = await _clientService.GetClientById(clientDTO.Id);
         if (existingClient == null)
             return NotFound($"Client with id {clientDTO.Id} not found!");
+        
         if (clientDTO == null)
             return BadRequest("Invalid client data");
+        
         await _clientService.UpdateClient(clientDTO);
         return Ok(clientDTO);
 
     }
+
+    private async Task<bool> IsUserAuthorized()
+    {
+        var logedUser = await _userService.GetUser(User.GetUserId());
+        return logedUser != null && logedUser.IsAdmin;
+    }
+
+
 }
