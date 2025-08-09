@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 using MVMedia.Api.DTOs;
+using MVMedia.Api.Identity;
 using MVMedia.Api.Services.Interfaces;
 using MVMedia.API.Models;
 
@@ -8,19 +10,27 @@ namespace MVMedia.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class ClientController : Controller
 {
     private readonly IClientService _clientService;
+    private readonly IUserService _userService;
 
 
-    public ClientController(IClientService clientService)
+    public ClientController(IClientService clientService, IUserService userService)
     {
         _clientService = clientService;
+        _userService = userService;
     }
 
     [HttpGet("GetAllClients")]
     public async Task<ActionResult<IEnumerable<Client>>> GetAllClients()
     {
+        
+        var logedUser = await _userService.GetUser(User.GetUserId());
+        if (!logedUser.IsAdmin)
+            return Unauthorized("You are not authorized to access this resource");
+
         var clients = await _clientService.GetAllClients();
         return Ok(clients);
 

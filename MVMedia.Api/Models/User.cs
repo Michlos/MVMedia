@@ -10,6 +10,8 @@ public class User
     public byte[] PasswordHash { get; private set; }
     public byte[] PasswordSalt { get; private set; }
     public string Email { get; private set; }
+    public bool IsActive { get; set; }
+    public bool IsAdmin { get; set; }
 
     public User(int id, string name, string login, string email)
     {
@@ -17,6 +19,7 @@ public class User
         Name = name;
         Login = login;
         Email = email;
+        IsAdmin = false;
     }
 
     public User(string name, string login, string email)
@@ -32,6 +35,10 @@ public class User
         PasswordSalt = passwordSalt;
     }
 
+    public void SetAdmin(bool isAdmin)
+    {
+        IsAdmin = isAdmin;
+    }
 
     //public void SetPassword(string password)
     //{

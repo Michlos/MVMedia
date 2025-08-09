@@ -2,6 +2,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace MVMedia.Api.DTOs;
 
@@ -25,5 +26,9 @@ public class UserDTO
     [MinLength(6, ErrorMessage = "Password must be at least 6 characters long")]
     [NotMapped] 
     public string Password { get; set; }
+    public bool IsActive { get; set; }
     
+    [JsonIgnore]
+    public bool IsAdmin { get; set; }
+
 }
