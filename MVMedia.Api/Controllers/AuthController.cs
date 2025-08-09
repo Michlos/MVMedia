@@ -1,5 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+
+using MVMedia.Api.DTOs;
+using MVMedia.Api.Models;
+using MVMedia.Api.Services.Interfaces;
+
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -13,6 +18,7 @@ public class AuthController : ControllerBase
     public AuthController(IConfiguration configuration)
     {
         _configuration = configuration;
+
     }
 
     [HttpPost("login")]
@@ -42,6 +48,8 @@ public class AuthController : ControllerBase
 
         return Unauthorized();
     }
+
+
 }
 
 public class LoginModel

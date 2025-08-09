@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 
+using MVMedia.Api.Models;
 using MVMedia.API.Models;
 
 namespace MVMedia.Api.DTOs.Mapping;
@@ -41,6 +42,10 @@ public class EntitiesToDTOMappingProfile : Profile
         CreateMap<MediaUpdateDTO, Media>()
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ReverseMap();
+
+
+        //USER MAPS
+        CreateMap<User, UserDTO>().ReverseMap();
 
     }
 }
