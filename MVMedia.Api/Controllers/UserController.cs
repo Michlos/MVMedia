@@ -28,7 +28,6 @@ public class UserController : Controller
    
 
     [HttpPost("register")]
-    [Authorize]
     public async Task<ActionResult<UserToken>> AddUser(UserDTO userDTO)
     {
         if (!await _userService.IsAdmin(User.GetUserId()))

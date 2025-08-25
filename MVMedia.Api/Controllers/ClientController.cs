@@ -10,7 +10,7 @@ namespace MVMedia.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+//[Authorize]
 public class ClientController : Controller
 {
     private readonly IClientService _clientService;
@@ -27,10 +27,11 @@ public class ClientController : Controller
     [HttpGet("GetAllClients")]
     public async Task<ActionResult<IEnumerable<Client>>> GetAllClients()
     {
-        
 
-        if (!await _userService.IsAdmin(User.GetUserId()))
-            return Unauthorized("You are not authorized to access this resource");
+
+        //AUTENTICAÇÃO DESABILITADA PARA TESTES
+        //if (!await _userService.IsAdmin(User.GetUserId()))
+        //    return Unauthorized("You are not authorized to access this resource");
 
         var clients = await _clientService.GetAllClients();
         return Ok(clients);
@@ -54,9 +55,9 @@ public class ClientController : Controller
     [HttpPost]
     public async Task<ActionResult<Client>> AddClient(ClientAddDTO clientDTO)
     {
-        
-        if (!await _userService.IsAdmin(User.GetUserId()))
-            return Unauthorized("You are not authorized to access this resource");
+        //AUTENTICAÇÃO DESABILITADA PARA TESTES
+        //if (!await _userService.IsAdmin(User.GetUserId()))
+        //    return Unauthorized("You are not authorized to access this resource");
 
 
         var clientAdded = await _clientService.AddClient(clientDTO);
