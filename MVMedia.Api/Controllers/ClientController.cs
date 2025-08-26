@@ -40,8 +40,9 @@ public class ClientController : Controller
     [HttpGet("GetClient/{id}")]
     public async Task<ActionResult<Client>> GetClientById(int id)
     {
-        if (!await _userService.IsAdmin(User.GetUserId()))
-            return Unauthorized("You are not authorized to access this resource");
+        //AUTENTICAÇÃO DESABILITADA PARA TESTES
+        //if (!await _userService.IsAdmin(User.GetUserId()))
+        //    return Unauthorized("You are not authorized to access this resource");
 
         var clientUpdated = await _clientService.GetClientById(id);
         if (clientUpdated == null)
@@ -71,8 +72,10 @@ public class ClientController : Controller
     [HttpPut]
     public async Task<ActionResult<Client>> UpdateClient([FromBody] ClientUpdateDTO clientDTO)
     {
-        if (!await _userService.IsAdmin(User.GetUserId()))
-            return Unauthorized("You are not authorized to access this resource");
+
+        //AUTENTICAÇÃO DESABILITADA PARA TESTES
+        //if (!await _userService.IsAdmin(User.GetUserId()))
+        //    return Unauthorized("You are not authorized to access this resource");
 
         if (clientDTO.Id == 0)
             return BadRequest("Is not possible to update a client without an ID");

@@ -36,7 +36,7 @@ public class ClientService : IClientService
     }
     public async Task<ClientViewModel> GetClientById(int id)
     {
-        var client = _clientFactory.CreateClient("MVMediaApi");
+        var client = _clientFactory.CreateClient("MVMediaAPI");
         using (var response = await client.GetAsync(apiEndpoint + $"GetClient/{id}"))
         {
             if (response.IsSuccessStatusCode)
@@ -75,7 +75,7 @@ public class ClientService : IClientService
     }
     public async Task<ClientViewModel> UpdateClient(ClientViewModel clientVM)
     {
-        var client = _clientFactory.CreateClient("MVMediaApi");
+        var client = _clientFactory.CreateClient("MVMediaAPI");
         ClientViewModel clienteUpdated = new ClientViewModel();
 
         using (var response = await client.PutAsJsonAsync(apiEndpoint, clientVM))
