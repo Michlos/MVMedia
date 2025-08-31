@@ -10,7 +10,7 @@ namespace MVMedia.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-//[Authorize]
+[Authorize]
 public class ClientController : Controller
 {
     private readonly IClientService _clientService;
@@ -29,9 +29,8 @@ public class ClientController : Controller
     {
 
 
-        //AUTENTICAÇÃO DESABILITADA PARA TESTES
-        //if (!await _userService.IsAdmin(User.GetUserId()))
-        //    return Unauthorized("You are not authorized to access this resource");
+        if (!await _userService.IsAdmin(User.GetUserId()))
+            return Unauthorized("You are not authorized to access this resource");
 
         var clients = await _clientService.GetAllClients();
         return Ok(clients);
@@ -40,9 +39,8 @@ public class ClientController : Controller
     [HttpGet("GetClient/{id}")]
     public async Task<ActionResult<Client>> GetClientById(int id)
     {
-        //AUTENTICAÇÃO DESABILITADA PARA TESTES
-        //if (!await _userService.IsAdmin(User.GetUserId()))
-        //    return Unauthorized("You are not authorized to access this resource");
+        if (!await _userService.IsAdmin(User.GetUserId()))
+            return Unauthorized("You are not authorized to access this resource");
 
         var clientUpdated = await _clientService.GetClientById(id);
         if (clientUpdated == null)
@@ -56,9 +54,8 @@ public class ClientController : Controller
     [HttpPost]
     public async Task<ActionResult<Client>> AddClient(ClientAddDTO clientDTO)
     {
-        //AUTENTICAÇÃO DESABILITADA PARA TESTES
-        //if (!await _userService.IsAdmin(User.GetUserId()))
-        //    return Unauthorized("You are not authorized to access this resource");
+        if (!await _userService.IsAdmin(User.GetUserId()))
+            return Unauthorized("You are not authorized to access this resource");
 
 
         var clientAdded = await _clientService.AddClient(clientDTO);
@@ -73,9 +70,8 @@ public class ClientController : Controller
     public async Task<ActionResult<Client>> UpdateClient([FromBody] ClientUpdateDTO clientDTO)
     {
 
-        //AUTENTICAÇÃO DESABILITADA PARA TESTES
-        //if (!await _userService.IsAdmin(User.GetUserId()))
-        //    return Unauthorized("You are not authorized to access this resource");
+        if (!await _userService.IsAdmin(User.GetUserId()))
+            return Unauthorized("You are not authorized to access this resource");
 
         if (clientDTO.Id == 0)
             return BadRequest("Is not possible to update a client without an ID");
