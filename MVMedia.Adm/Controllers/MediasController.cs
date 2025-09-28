@@ -52,13 +52,37 @@ public class MediasController : Controller
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<MediaViewModel>>> GetMediaByClienteId(int clientId)
+    public async Task<ActionResult<MediaViewModel>> GetMediaByClienteId(int clientId)
     {
         var result = await _mediaSerivce.GetMediaByClientId(clientId);
         // Corrigido: Verifica se result é nulo ou se a lista de mídias está vazia
         if (result == null || result.Medias == null || !result.Medias.Any())
             return View("Error", new string[] { "Something went wrong while processing your request" });
         return View("Index", result.Medias);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult> UpdateMedia(int id)
+    {
+        var result = await _mediaSerivce.GetMediaById(id);
+        if (result is null)
+            return View("Error", new string[] { "Something went wrong while processing your request" });
+        return View(result);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> UpdateMedia(MediaViewModel mediaVM)
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _mediaSerivce.UpdateMedia(mediaVM);
+            if (result is not null)
+                // Corrigido: Use RedirectToAction com o nome da action e o parâmetro
+                return RedirectToAction("ClientDetail", "Clients", new { id = mediaVM.ClientId });
+            else
+                return View("Error", new string[] { "Something whete wrong while processing your request" });
+        }
+        return View(mediaVM);
     }
 }
 

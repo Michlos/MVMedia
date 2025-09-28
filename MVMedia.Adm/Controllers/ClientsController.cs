@@ -70,7 +70,7 @@ public class ClientsController : Controller
         return View(clientVM);
     }
 
-    
+    // LIST MEDIA FOR CLIENT
     [HttpGet]
     public async Task<ActionResult<ClientWithMediaDTO>> ClientDetail(int id)
     {

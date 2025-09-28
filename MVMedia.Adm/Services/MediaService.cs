@@ -97,8 +97,24 @@ public class MediaService : IMediaService
     }
 
 
-    public Task<MediaViewModel> UpdateMedia(MediaViewModel media)
+    public async Task<MediaViewModel> UpdateMedia(MediaViewModel mediaVM)
     {
-        throw new NotImplementedException();
+        var client = _clientFactory.CreateClient("MVMediaAPI");
+        MediaViewModel mediaUpdated = new MediaViewModel();
+
+        using (var response = await client.PutAsJsonAsync(apiEndpoint, mediaVM))
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var apiResponse = await response.Content.ReadAsStringAsync();
+                mediaUpdated = JsonSerializer.Deserialize<MediaViewModel>(apiResponse, _options);
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+        return mediaUpdated;
     }
 }

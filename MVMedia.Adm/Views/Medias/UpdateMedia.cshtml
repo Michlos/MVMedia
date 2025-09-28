@@ -1,0 +1,41 @@
+﻿@model MediaViewModel
+@using MVMedia.Adm.Models
+
+<h2>Edit Media for Client</h2>
+<h4>Client: @Model.ClientName</h4>
+<form asp-action="UpdateMedia">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="MediaUrl"></label>
+        <input asp-for="MediaUrl" class="form-control" />
+        <span asp-validation-for="MediaUrl" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Notes"></label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IsActive"></label>
+        <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+        <span asp-validation-for="IsActive" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="ClientId" />
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Save</button>
+        @* <a asp-page="/Clients/Index" class="btn btn-secondary">Cancel</a> *@
+        <a asp-controller="Clients" asp-action="ClientDetail" asp-route-id="@Model.ClientId" class="btn btn-secondary">Cancel</a>
+    </div>
+
+</form>
