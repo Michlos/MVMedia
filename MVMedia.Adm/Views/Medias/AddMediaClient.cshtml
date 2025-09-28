@@ -1,0 +1,34 @@
+﻿@model MVMedia.Adm.Models.MediaViewModel
+@using MVMedia.Adm.Models
+
+<h2>Criar Nova Mídia para Cliente</h2>
+<h4>Client: @Model.ClientName</h4>
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="MediaUrl"></label>
+        <input asp-for="MediaUrl" class="form-control" />
+        <span asp-validation-for="MediaUrl" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Notes"></label>
+        <textarea asp-for="Notes" class="form-control"></textarea>
+        <span asp-validation-for="Notes" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="ClientId" />
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Add</button>
+        @* <a asp-page="/Clients/Index" class="btn btn-secondary">Cancel</a> *@
+        <a asp-controller="Clients" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>

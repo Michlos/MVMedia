@@ -1,4 +1,4 @@
-using MVMedia.Adm.Identity;
+using MVMedia.Adm.DTOs.Mapping;
 using MVMedia.Adm.Services;
 using MVMedia.Adm.Services.Interfaces;
 
@@ -19,7 +19,11 @@ builder.Services.AddHttpClient("MVMediaAPI", a =>
 
 //REGISTER SERVICES
 builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IMediaService, MediaService>();
 builder.Services.AddScoped<ApiAuthService>();
+
+//ADD SERVICES AUTOMAPPER
+builder.Services.AddAutoMapper(cfg => cfg.AddProfile<EntitiesToDTOMappingProfile>());
 
 var app = builder.Build();
 

@@ -13,4 +13,5 @@ public class MediaViewModel
     public string MediaUrl { get; set; }
     public string? Notes { get; set; }
     public int ClientId { get; set; }
+    public string? ClientName { get; set; }
 }

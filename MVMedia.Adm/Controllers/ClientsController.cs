@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components.Rendering;
+using Microsoft.AspNetCore.Mvc;
+using MVMedia.Adm.DTOs;
 using MVMedia.Adm.Models;
 using MVMedia.Adm.Services.Interfaces;
 
@@ -7,10 +9,12 @@ namespace MVMedia.Adm.Controllers;
 public class ClientsController : Controller
 {
     private readonly IClientService _clientService;
+    private readonly IMediaService _mediaService;
 
-    public ClientsController(IClientService clientService)
+    public ClientsController(IClientService clientService, IMediaService mediaService)
     {
         _clientService = clientService;
+        _mediaService = mediaService;
     }
 
     [HttpGet]
@@ -64,6 +68,18 @@ public class ClientsController : Controller
                 return View("Error", new string[] { "Something went wrong while processing your request" });
         }
         return View(clientVM);
+    }
+
+    
+    [HttpGet]
+    public async Task<ActionResult<ClientWithMediaDTO>> ClientDetail(int id)
+    {
+        var clientWithMedia = await _mediaService.GetMediaByClientId(id);
+        if (clientWithMedia == null)
+        {
+            return NotFound("Client not found.");
+        }
+        return View(clientWithMedia);
     }
 
 

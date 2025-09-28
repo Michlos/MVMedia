@@ -23,4 +23,5 @@ public class ClientViewModel
     public DateTime? CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public bool IsActive { get; set; }
+    public virtual IEnumerable<MediaViewModel>? Medias { get; set; }
 }

@@ -23,6 +23,8 @@
                 <th>@Html.DisplayNameFor(model => model.Id)</th>
                 <th>@Html.DisplayNameFor(model => model.Name)</th>
                 <th>@Html.DisplayNameFor(model => model.IsActive)</th>
+                <th>Edit</th>
+                <th>Add Media</th>
             </tr>
         </thead>
         <tbody>
@@ -30,11 +32,19 @@
             {
                 <tr>
                     <td>@Html.DisplayFor(modelItem => item.Id)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>
+                        @* <a href="@Url.Action("ClientDetail", "Clients", new { item.Id })">@Html.DisplayFor(modelItem => item.Name)</a> *@
+                        <a asp-action="ClientDetail" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                    </td>
                     <td>@Html.DisplayFor(modelItem => item.IsActive)</td>
                     <td>
                         <a asp-action="UpdateClient" asp-route-id="@item.Id" title="Edit" class="btn btn-warning">
                             <span class="fas fa-edit"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <a asp-controller="Medias" asp-action="AddMediaClient" asp-route-clientId="@item.Id" title="Add Media" class="btn btn-success">
+                            <span class="fas fa-play"></span>
                         </a>
                     </td>
                 </tr>

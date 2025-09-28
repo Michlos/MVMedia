@@ -1,0 +1,76 @@
+﻿@model MVMedia.Adm.DTOs.ClientWithMediaDTO
+
+<div>
+    <h4>Clients</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Client.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Client.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Client.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Client.Name)
+        </dd>
+        @*SE PESSOA JURÍDICA EXIBE CNPJ SENÃO EXIBE CPF*@  
+        @if (Model.Client.CNPJ != null && Model.Client.CNPJ != string.Empty)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Client.CNPJ)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Client.CNPJ)
+            </dd>
+        }
+        else
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Client.CPF)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Client.CPF)
+            </dd>
+        }
+    </dl>
+</div>
+<div class="mb-3">
+    <h3>Client Media</h3>
+    <a asp-controller="Medias" asp-action="AddMediaClient" asp-route-clientId="@Model.Client.Id" class="btn btn-primary">Create New Media</a>
+    <hr />
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Media URL</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Medias != null)
+            {
+                foreach (var media in Model.Medias)
+                {
+                    <tr>
+                        <td>@media.Title</td>
+                        <td><a href="@media.MediaUrl" target="_blank">@media.MediaUrl</a></td>
+                        <td>
+                            <a asp-controller="Medias" asp-action="EditMedia" asp-route-id="@media.Id" class="btn btn-secondary">Edit</a>
+                            <a asp-controller="Medias" asp-action="DeleteMedia" asp-route-id="@media.Id" class="btn btn-danger">Delete</a>
+                            <form method="post" asp-asp-controller="Medias" asp-action="DeleteMedia" asp-route-id="@media.Id" class="d-inline">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    @Html.ActionLink("Edit", "EditClient", "Clients", new { id = Model.Client.Id })
+    <a asp-action="Index">Back to List</a>
+</div>
