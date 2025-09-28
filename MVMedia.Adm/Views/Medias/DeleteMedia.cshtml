@@ -1,0 +1,49 @@
+﻿@model MediaViewModel
+<h3>Delete Media</h3>
+<h4>Are you sure you want to dele this Media?</h4>
+<div class="panel panel-default">
+    <h2>Media from Client: @Html.DisplayFor(Model => Model.ClientName)</h2>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MediaUrl)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MediaUrl)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ClientName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ClientName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+    </dl>
+    <hr />
+    <form asp-action="DeleteMedia">
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="ClientId" />
+        <input type="hidden" asp-for="ClientName" />
+        <div class="form-group">
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a asp-controller="Clients" asp-action="ClientDetail" asp-route-id="@Model.ClientId" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

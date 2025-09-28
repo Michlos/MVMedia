@@ -10,5 +10,6 @@ public interface IMediaService
     Task<ClientWithMediaDTO> GetMediaByClientId(int clientId);
     Task<MediaViewModel> AddMedia(MediaViewModel media);
     Task<MediaViewModel> UpdateMedia(MediaViewModel media);
+    Task<bool> DeleteMedia(int id);
     //Task<IEnumerable<MediaViewModel>> GetMediaByClientId(int clientId);
 }

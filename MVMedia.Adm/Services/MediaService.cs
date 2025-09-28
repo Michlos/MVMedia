@@ -117,4 +117,18 @@ public class MediaService : IMediaService
         }
         return mediaUpdated;
     }
+
+    public async Task<bool> DeleteMedia(int id)
+    {
+        var client = _clientFactory.CreateClient("MVMediaAPI");
+
+        using (var response = await client.DeleteAsync(apiEndpoint + id))
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

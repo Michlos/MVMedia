@@ -84,5 +84,25 @@ public class MediasController : Controller
         }
         return View(mediaVM);
     }
+
+    [HttpGet]
+    public async Task<ActionResult> DeleteMedia(int id)
+    {
+        var result = await _mediaSerivce.GetMediaById(id);
+        if (result is null)
+            return View("Error", new string[] { "Something went wrong while processing your request" });
+        return View(result);
+    }
+
+    [HttpPost, ActionName("DeleteMedia")]
+    public async Task<ActionResult> DeleteMediaConfirmed(int id)
+    {
+        var clientId = (await _mediaSerivce.GetMediaById(id))?.ClientId;
+        var result = await _mediaSerivce.DeleteMedia(id);
+        if (!result)
+            return View("Error", new string[] { "Something went wrong while processing your request" });
+
+        return RedirectToAction("ClienteDetail","Clients", new { id = clientId });
+    }
 }
 
