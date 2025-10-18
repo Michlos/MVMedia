@@ -36,8 +36,8 @@ builder.Services.AddScoped<IMediaFileService, MediaFileService>();
 //ADD SERVICES AUTOMAPPER
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<EntitiesToDTOMappingProfile>());
 
-//CONFIGURATION FOR FILE PATH UPLOAD
-builder.Services.Configure<VideoSettings>(builder.Configuration.GetSection("VideoSettings"));
+////CONFIGURATION FOR FILE PATH UPLOAD
+//builder.Services.Configure<VideoSettings>(builder.Configuration.GetSection("VideoSettings"));
 
 
 //START configuration for JWT authentication
@@ -95,6 +95,7 @@ builder.Services.AddSwaggerGen(c =>
 
 // Carregar VideoSettings do appsettings.json
 var videoSettings = builder.Configuration.GetSection("VideoSettings").Get<VideoSettings>();
+
 builder.Services.AddSingleton(videoSettings);
 
 builder.Services.AddControllers();
