@@ -1,15 +1,16 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.OpenApi.Models;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using MVMedia.Api.Context;
 using Microsoft.EntityFrameworkCore;
-using MVMedia.Api.Repositories.Interfaces;
-using MVMedia.Api.Repositories;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using MVMedia.Api.Context;
 using MVMedia.Api.DTOs.Mapping;
+using MVMedia.Api.Identity;
+using MVMedia.Api.Videos;
+using MVMedia.Api.Repositories;
+using MVMedia.Api.Repositories.Interfaces;
 using MVMedia.Api.Services;
 using MVMedia.Api.Services.Interfaces;
-using MVMedia.Api.Identity;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,15 +24,20 @@ builder.Services.AddDbContext<ApiDbContext>(opt => opt.UseNpgsql(PostgreSqlConne
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IMediaRepository, MediaRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IMediaFileRepository, MediaFileRepository>();
 
 //SERVICES
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IMediaSerivce, MediaService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthtenticate, AuthenticateService>();
+builder.Services.AddScoped<IMediaFileService, MediaFileService>();
 
 //ADD SERVICES AUTOMAPPER
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<EntitiesToDTOMappingProfile>());
+
+//CONFIGURATION FOR FILE PATH UPLOAD
+builder.Services.Configure<VideoSettings>(builder.Configuration.GetSection("VideoSettings"));
 
 
 //START configuration for JWT authentication
@@ -87,7 +93,9 @@ builder.Services.AddSwaggerGen(c =>
 });
 //END of JWT authentication configuration
 
-
+// Carregar VideoSettings do appsettings.json
+var videoSettings = builder.Configuration.GetSection("VideoSettings").Get<VideoSettings>();
+builder.Services.AddSingleton(videoSettings);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

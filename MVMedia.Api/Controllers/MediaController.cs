@@ -11,7 +11,6 @@ namespace MVMedia.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
 public class MediaController : Controller
 {
 
@@ -28,10 +27,10 @@ public class MediaController : Controller
     [HttpGet("GetAllMedia")]
     public async Task<ActionResult<IEnumerable<MediaGetDTO>>> GetAllMedia()
     {
-        if (!await _userService.UserAutorized(User.GetUserId()))
-            return Unauthorized("You are not authorized to access this resource");
+        //if (!await _userService.UserAutorized(User.GetUserId()))
+        //    return Unauthorized("You are not authorized to access this resource");
 
-        var medias = await _mediaService.GetAllMedia();
+        var medias = (await _mediaService.GetAllMedia()).OrderBy(o => o.Id);
         return Ok(medias);
     }
 

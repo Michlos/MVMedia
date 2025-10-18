@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using MVMedia.Api.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace MVMedia.API.Models;
@@ -24,8 +24,7 @@ public class Media
     //vincular ao cliente onde o video pertence a um cliente
     public int ClientId { get; set; }
     public virtual Client Client { get; set; } // Navigation property to the Client entity
-
-
-
+    public int MediaFileId { get; set; }
+    public virtual MediaFile MediaFile { get; set; }
 
 }

@@ -1,45 +1,23 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using MVMedia.Web.Data;
-using MVMedia.Web.Identity;
-using MVMedia.Web.Services;
-using MVMedia.Web.Services.Interfaces;
+using MVMedia.Web.Service;
+using MVMedia.Web.Service.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-
+// Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddTransient<BearerTokenHandler>();
-
-//REGISTER HTTP CLIENT SERVICE WITH API BASE URL
-builder.Services.AddHttpClient("MVMediaAPI", a =>
+builder.Services.AddHttpClient("MVMediaAPI", c =>
 {
-    a.BaseAddress = new Uri(builder.Configuration["ServiceUri:MVMediaAPI"]);
-})
-.AddHttpMessageHandler<BearerTokenHandler>();
+    c.BaseAddress = new Uri(builder.Configuration["ServiceUri:MVMediaAPI"]);
+});
 
-//REGISTER SERVICES
-builder.Services.AddScoped<IClientService, ClientService>();
-builder.Services.AddScoped<ApiAuthService>();
+builder.Services.AddScoped<IMediaService, MediaService>();
+builder.Services.AddScoped<MediaService>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseMigrationsEndPoint();
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -56,6 +34,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
 
 app.Run();
