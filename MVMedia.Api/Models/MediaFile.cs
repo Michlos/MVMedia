@@ -26,5 +26,4 @@ public class MediaFile
     public int MediaId { get; set; }
     public virtual Media Media { get; set; }
 
-
 }

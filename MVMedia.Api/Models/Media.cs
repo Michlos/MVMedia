@@ -24,7 +24,8 @@ public class Media
     //vincular ao cliente onde o video pertence a um cliente
     public int ClientId { get; set; }
     public virtual Client Client { get; set; } // Navigation property to the Client entity
-    public int MediaFileId { get; set; }
-    public virtual MediaFile MediaFile { get; set; }
 
+    // Relacionamento 1x1 com MediaFile
+    public Guid MediaFileId { get; set; }
+    public virtual MediaFile MediaFile { get; set; }
 }

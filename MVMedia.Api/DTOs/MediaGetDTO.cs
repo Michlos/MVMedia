@@ -21,5 +21,6 @@ public class MediaGetDTO
     public string MediaUrl { get; set; } 
     public string? Notes { get; set; }
     public int ClientId { get; set; }
+    public Guid MediaFileId { get; set; } 
 
 }
