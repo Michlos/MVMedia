@@ -1,4 +1,5 @@
-﻿using MVMedia.API.Models;
+﻿using Microsoft.Extensions.Primitives;
+using MVMedia.API.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace MVMedia.Api.Models;
@@ -15,6 +16,14 @@ public class MediaFile
 
     [Required]
     [MaxLength(100)]
+    public string Title { get; set; }
+
+    [MaxLength(500)]
+    public string? Description { get; set; }
+
+
+    [Required]
+    [MaxLength(100)]
     public string FileName { get; set; }
 
     public long FileSize { get; set; } // Size in bytes
@@ -23,7 +32,7 @@ public class MediaFile
     public DateTime? UpdatedAt { get; set; }
     public bool IsPublic { get; set; }
     public bool IsActive { get; set; }
-    public int MediaId { get; set; }
-    public virtual Media Media { get; set; }
+    public int ClientId { get; set; }
+    public virtual Client Client { get; set; }
 
 }

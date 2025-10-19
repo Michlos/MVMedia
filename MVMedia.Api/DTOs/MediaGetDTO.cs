@@ -20,7 +20,6 @@ public class MediaGetDTO
     [MaxLength(500)]
     public string MediaUrl { get; set; } 
     public string? Notes { get; set; }
-    public int ClientId { get; set; }
-    public Guid MediaFileId { get; set; } 
+    public int ClientId { get; set; } 
 
 }

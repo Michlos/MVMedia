@@ -1,17 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MVMedia.Api.DTOs;
 using MVMedia.Api.Models;
 using MVMedia.Api.Services.Interfaces;
-using System.ComponentModel.DataAnnotations;
 
 namespace MVMedia.Api.Controllers;
 
-public class MediaFileUploadDTO
-{
-    [Required]
-    public IFormFile File { get; set; }
-    public bool IsPublic { get; set; }
-    public int MediaId { get; set; }
-}
+
 
 [ApiController]
 [Route("api/[controller]")]
@@ -34,12 +28,14 @@ public class MediaFileController : ControllerBase
         var mediaFile = new MediaFile
         {
             Id = Guid.NewGuid(),
+            Title = dto.Title,
+            Description = dto.Description,
             FileName = fileName,
             FileSize = dto.File.Length,
             UploadedAt = DateTime.UtcNow,
             IsPublic = dto.IsPublic,
             IsActive = true,
-            MediaId = dto.MediaId
+            ClientId = dto.ClientId
         };
 
         // Salva no banco

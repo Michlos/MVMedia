@@ -3,6 +3,7 @@ using System;
 using MVMedia.Api.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MVMedia.Api.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251019140326_RemoveMediaFleIdFK")]
+    partial class RemoveMediaFleIdFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,13 +138,6 @@ namespace MVMedia.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("ClientId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -156,10 +152,8 @@ namespace MVMedia.Api.Migrations
                     b.Property<bool>("IsPublic")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                    b.Property<int>("MediaId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -169,7 +163,7 @@ namespace MVMedia.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("MediaId");
 
                     b.ToTable("MediaFiles");
                 });
@@ -226,13 +220,13 @@ namespace MVMedia.Api.Migrations
 
             modelBuilder.Entity("MVMedia.Api.Models.MediaFile", b =>
                 {
-                    b.HasOne("MVMedia.API.Models.Client", "Client")
+                    b.HasOne("MVMedia.API.Models.Media", "Media")
                         .WithMany()
-                        .HasForeignKey("ClientId")
+                        .HasForeignKey("MediaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Client");
+                    b.Navigation("Media");
                 });
 #pragma warning restore 612, 618
         }
