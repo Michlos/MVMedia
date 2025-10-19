@@ -71,4 +71,40 @@ public class MediaFileController : ControllerBase
         var uris = activeMediaFiles.Select(m => baseUrl + m.FileName).ToList();
         return Ok(uris);
     }
+
+    [HttpPut("UpdateMediaFile/{id}")]
+    public async Task<ActionResult<MediaFile>> UpdateMediaFile(Guid id, [FromForm] MediaFileUploadDTO dto)
+    {
+        var existingMediaFile = await _mediaFileService.GetMediaFileById(id);
+        var oldFileName = existingMediaFile?.FileName;
+        if (existingMediaFile == null)
+            return NotFound("Arquivo de mídia não encontrado.");
+
+        // Atualiza os campos do modelo
+        existingMediaFile.Title = dto.Title;
+        existingMediaFile.Description = dto.Description;
+        existingMediaFile.IsPublic = dto.IsPublic;
+        existingMediaFile.UpdatedAt = DateTime.UtcNow;
+        existingMediaFile.ClientId = dto.ClientId;
+
+        // Se um novo arquivo foi enviado, atualiza o arquivo físico e o nome
+        if (dto.File != null && dto.File.Length > 0)
+        {
+            var newFileName = $"{Guid.NewGuid()}_{dto.File.FileName}";
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Videos");
+            Directory.CreateDirectory(uploadPath);
+            var newFilePath = Path.Combine(uploadPath, newFileName);
+
+            using (var stream = new FileStream(newFilePath, FileMode.Create))
+            {
+                await dto.File.CopyToAsync(stream);
+            }
+
+            existingMediaFile.FileName = newFileName;
+            existingMediaFile.FileSize = dto.File.Length;
+        }
+
+        var updatedMediaFile = await _mediaFileService.UpdateMediaFile(existingMediaFile, oldFileName);
+        return Ok(updatedMediaFile);
+    }
 }

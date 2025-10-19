@@ -34,9 +34,9 @@ public class MediaFileService : IMediaFileService
         return await _mediaFileRepository.GetMediaFileById(id);
     }
 
-    public async Task<MediaFile> UpdateMediaFile(MediaFile mediaFile)
+    public async Task<MediaFile> UpdateMediaFile(MediaFile mediaFile, string oldFileName)
     {
-        var updatedMediaFile = await _mediaFileRepository.UpdateMediaFile(mediaFile);
+        var updatedMediaFile = await _mediaFileRepository.UpdateMediaFile(mediaFile, oldFileName);
         return updatedMediaFile;
     }
 }

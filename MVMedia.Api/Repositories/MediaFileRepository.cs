@@ -3,6 +3,7 @@ using MVMedia.Api.Models;
 using MVMedia.Api.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using MVMedia.Api.Videos;
+using System.IO;
 
 namespace MVMedia.Api.Repositories;
 
@@ -56,16 +57,30 @@ public class MediaFileRepository : IMediaFileRepository
         return await _context.MediaFiles.FindAsync(id).AsTask();
     }
 
-    public async Task<MediaFile> UpdateMediaFile(MediaFile mediaFile)
+    public async Task<MediaFile> UpdateMediaFile(MediaFile mediaFile, string oldFileName)
     {
-        var existingMediaFile = await _context.MediaFiles.FindAsync(mediaFile.Id);
+        var existingMediaFile = await GetMediaFileById(mediaFile.Id);
         if (existingMediaFile == null)
             throw new ArgumentException($"MediaFile with Id {mediaFile.Id} not found.");
 
-        //ATUALIZA OS CAMPOS NECESSÁRIOS
-        if (mediaFile.FileName == null && mediaFile.FileName != existingMediaFile.FileName)
+        // ATUALIZA OS CAMPOS NECESSÁRIOS
+        if (mediaFile.Title != null && mediaFile.Title != existingMediaFile.Title)
+            existingMediaFile.Title = mediaFile.Title;
+        if (mediaFile.Description != null && mediaFile.Description != existingMediaFile.Description)
+            existingMediaFile.Description = mediaFile.Description;
+
+        // Se o nome do arquivo foi alterado, apaga o arquivo antigo do servidor
+        if (mediaFile.FileName != null && mediaFile.FileName != oldFileName)
+        {
+            var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), _videoSettings.VideoPath, oldFileName);
+            if (File.Exists(oldFilePath))
+            {
+                File.Delete(oldFilePath);
+            }
             existingMediaFile.FileName = mediaFile.FileName;
-        if (mediaFile.FileSize == 0 && mediaFile.FileSize != existingMediaFile.FileSize)
+        }
+
+        if (mediaFile.FileSize > 0 && mediaFile.FileSize != existingMediaFile.FileSize)
             existingMediaFile.FileSize = mediaFile.FileSize;
         if (mediaFile.IsPublic != existingMediaFile.IsPublic)
             existingMediaFile.IsPublic = mediaFile.IsPublic;
