@@ -1,0 +1,56 @@
+﻿@model IEnumerable<MVMedia.Adm.Models.MediaFileViewModel>
+<h2>Medias</h2>
+<br />
+<a asp-action="CreateMedia" class="btn btn-primary" title="Create New Media">
+    <span class="fa fa-plus"></span> Create New Media
+</a>
+<div class="panel panel-default">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(Model => Model.FileName)
+                </th>
+                @* <th>
+                    @Html.DisplayNameFor(Model => Model.ClientName)
+                </th> *@
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FileName)
+                    </td>
+                    @*                    <td>
+                        @Html.DisplayFor(modelItem => item.ClientName)
+                    </td> *@
+                    <td align="right">
+                        <a asp-action="EditMedia" asp-route-id="@item.Id" title="Edit" class="btn btn-warning">
+                            <span class="fa fa-edit"></span>
+                        </a>
+                    </td>
+                    <td align="left">
+                        <a asp-action="DeleteMedia" asp-route-id="@item.Id" title="Delete" class="btn btn-danger">
+                            <span class="fa fa-trash-alt"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+    </table>
+</div>

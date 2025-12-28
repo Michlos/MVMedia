@@ -1,4 +1,5 @@
-﻿using MVMedia.Adm.Models;
+﻿using MVMedia.Adm.DTOs;
+using MVMedia.Adm.Models;
 using MVMedia.Adm.Services.Interfaces;
 using System.Text.Json;
 
@@ -62,18 +63,22 @@ public class MediaFileService : IMediaFileService
         {
             // Supondo que você tenha o arquivo físico disponível em algum local
             // Exemplo: mediaFile.FilePath ou similar
-            var filePath = Path.Combine("CAMINHO_ONDE_ESTA_O_ARQUIVO", mediaFile.FileName);
-            if (File.Exists(filePath))
-            {
-                var fileStream = File.OpenRead(filePath);
-                var fileContent = new StreamContent(fileStream);
-                fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
-                form.Add(fileContent, "File", mediaFile.FileName);
-            }
-            else
-            {
-                throw new FileNotFoundException("Arquivo não encontrado para upload.", filePath);
-            }
+            //var filePath = Path.Combine("CAMINHO_ONDE_ESTA_O_ARQUIVO", mediaFile.FileName);
+            //if (File.Exists(filePath))
+            //{
+            //    var fileStream = File.OpenRead(filePath);
+            //    var fileContent = new StreamContent(fileStream);
+            //    fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+            //    form.Add(fileContent, "File", mediaFile.FileName);
+            //}
+            //else
+            //{
+            //    throw new FileNotFoundException("Arquivo não encontrado para upload.", filePath);
+            //}
+
+            var fileContent = new StreamContent(mediaFile.File.OpenReadStream());
+            fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(mediaFile.File.ContentType);
+            form.Add(fileContent, "File", mediaFile.File.FileName);
         }
         else
         {
@@ -157,5 +162,22 @@ public class MediaFileService : IMediaFileService
         }
     }
 
+    public async Task<ClientWithMediaFileDTO> GetMediaByClientId(int clientId)
+    {
+        var client = _clientFactory.CreateClient("MVMediaAPI");
+        //TODO : Ajustar endpoint na API se necessário
+        var response = await client.GetAsync(apiEndpoint + $"GetMediaFilesByClientId/{clientId}");
 
+        if (response.IsSuccessStatusCode)
+        {
+            var apiResponse = await response.Content.ReadAsStringAsync();
+            var result = JsonSerializer.Deserialize<ClientWithMediaFileDTO>(apiResponse, _options);
+            return result;
+        }
+        else
+        {
+            var error = await response.Content.ReadAsStringAsync();
+            throw new ApplicationException($"Erro ao buscar arquivos de mídia por cliente: {error}");
+        }
+    }
 }

@@ -20,6 +20,7 @@ builder.Services.AddHttpClient("MVMediaAPI", a =>
 //REGISTER SERVICES
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IMediaService, MediaService>();
+builder.Services.AddScoped<IMediaFileService, MediaFileService>();
 builder.Services.AddScoped<ApiAuthService>();
 
 //ADD SERVICES AUTOMAPPER

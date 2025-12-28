@@ -1,4 +1,4 @@
-﻿@model MVMedia.Adm.DTOs.ClientWithMediaDTO
+﻿@model MVMedia.Adm.DTOs.ClientWithMediaFileDTO
 
 <div>
     <h4>Clients</h4>
@@ -39,7 +39,7 @@
 </div>
 <div class="mb-3">
     <h3>Client Media</h3>
-    <a asp-controller="Medias" asp-action="AddMediaClient" asp-route-clientId="@Model.Client.Id" class="btn btn-primary">Create New Media</a>
+    <a asp-controller="MediaFiles" asp-action="AddMediaClient" asp-route-clientId="@Model.Client.Id" class="btn btn-primary">Create New Media</a>
     <hr />
     <table class="table table-striped mt-3">
         <thead>
@@ -51,18 +51,18 @@
             </tr>
         </thead>
         <tbody>
-            @if (Model.Medias != null)
+            @if (Model.MediaFiles != null)
             {
-                foreach (var media in Model.Medias)
+                foreach (var media in Model.MediaFiles)
                 {
                     <tr>
                         <td>@media.Title</td>
-                        <td><a href="@media.MediaUrl" target="_blank">@media.MediaUrl</a></td>
+                        <td><a href="@media.Description" target="_blank">@media.Description</a></td>
                         <td>
-                            <input type="checkbox" @(media.IsActive ? "checked" : "") disabled />
+                            <input type="checkbox" @(media.IsPublic ? "checked" : "") disabled />
                         </td>
                         <td>
-                            <a asp-controller="Medias" asp-action="UpdateMedia" asp-route-id="@media.Id" class="btn btn-secondary">Edit</a>
+                            <a asp-controller="MediaFiles" asp-action="UpdateMedia" asp-route-id="@media.Id" class="btn btn-secondary">Edit</a>
                             @* <a asp-controller="Medias" asp-action="DeleteMedia" asp-route-id="@media.Id" class="btn btn-danger">Delete</a> *@
                             @*                             <form method="post" asp-asp-controller="Medias" asp-action="DeleteMedia" asp-route-id="@media.Id" class="d-inline">
                                 <button type="submit" class="btn btn-danger">Delete</button>

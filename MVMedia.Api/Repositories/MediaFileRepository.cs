@@ -57,6 +57,11 @@ public class MediaFileRepository : IMediaFileRepository
         return await _context.MediaFiles.FindAsync(id).AsTask();
     }
 
+    public async Task<ICollection<MediaFile>> GetMediaFilesByClientId(int clientId)
+    {
+        return await _context.MediaFiles.Where(mf => mf.ClientId == clientId).ToListAsync();
+    }
+
     public async Task<MediaFile> UpdateMediaFile(MediaFile mediaFile, string oldFileName)
     {
         var existingMediaFile = await GetMediaFileById(mediaFile.Id);

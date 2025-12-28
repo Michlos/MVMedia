@@ -62,6 +62,15 @@ public class MediaFileController : ControllerBase
         return Ok(activeMediaFiles);
     }
 
+    [HttpGet("GetMediaFileByClientId/{clientId}")]
+    public async Task<ActionResult<ClientWithMediaFileDTO>> GetMediaFileByClientId(int clientId)
+    {
+        var clientMediaFiles = await _mediaFileService.GetAllMediaByClientId(clientId);
+        if (clientMediaFiles == null)
+            return NotFound("Nenhum arquivo de mídia encontrado para o cliente especificado.");
+        return Ok(clientMediaFiles);
+    }
+
     [HttpGet("ListMediaUris")]
     public async Task<ActionResult<IEnumerable<string>>> ListMediaUris()
     {

@@ -9,12 +9,12 @@ namespace MVMedia.Adm.Controllers;
 public class ClientsController : Controller
 {
     private readonly IClientService _clientService;
-    private readonly IMediaService _mediaService;
+    private readonly IMediaFileService _mediaFileService;
 
-    public ClientsController(IClientService clientService, IMediaService mediaService)
+    public ClientsController(IClientService clientService, IMediaFileService mediaFileService)
     {
         _clientService = clientService;
-        _mediaService = mediaService;
+        _mediaFileService = mediaFileService;
     }
 
     [HttpGet]
@@ -74,7 +74,7 @@ public class ClientsController : Controller
     [HttpGet]
     public async Task<ActionResult<ClientWithMediaDTO>> ClientDetail(int id)
     {
-        var clientWithMedia = await _mediaService.GetMediaByClientId(id);
+        var clientWithMedia = await _mediaFileService.GetMediaByClientId(id);
         if (clientWithMedia == null)
         {
             return NotFound("Client not found.");

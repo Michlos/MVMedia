@@ -9,4 +9,5 @@ public interface IMediaFileRepository
     Task<MediaFile> GetMediaFileById(Guid id);
     Task<bool> DeleteMediaFile(Guid id);
     Task<ICollection<MediaFile>> GetAllMediaFiles();
+    Task<ICollection<MediaFile>> GetMediaFilesByClientId(int clientId);
 }
