@@ -13,14 +13,12 @@ public class MediaFileViewModel
     [MaxLength(500)]
     public string? Description { get; set; }
 
-    [Required]
-    [MaxLength(100)]
-    public string FileName { get; set; }
+    public string? FileName { get; set; }
     public long FileSize { get; set; } // Size in bytes
     public bool IsPublic { get; set; }
     public bool IsActive { get; set; }
+    
     public IFormFile File { get; set; }
     public int ClientId { get; set; }
-    public virtual ClientViewModel Client { get; set; }
     public string? ClientName { get; set; }
 }

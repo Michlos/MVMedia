@@ -1,0 +1,54 @@
+﻿@model MVMedia.Adm.Models.MediaFileViewModel
+@using MVMedia.Adm.Models
+
+
+
+
+<h2>Criar Nova Mídia para Cliente</h2>
+<h4>Client: @Model.ClientName</h4>
+<form asp-action="AddMediaFileClient" enctype="multipart/form-data">
+    @* <div asp-validation-summary="All" class="text-danger"></div> *@
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="File"></label>
+        <input asp-for="File" type="file" class="form-control" id="File" />
+        <span asp-validation-for="File" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IsPublic"></label>
+        <input asp-for="IsPublic" type="checkbox" class="form-check-input" />
+        <span asp-validation-for="IsPublic" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="ClientId" />
+    <input type="hidden" asp-for="FileName" id="FileName" />
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" asp-action="AddMediaFileClient" />
+        <a asp-controller="Clients" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var fileInput = document.getElementById("File");
+        var fileNameInput = document.getElementById("FileName");
+
+        if (fileInput && fileNameInput) {
+            fileInput.addEventListener("change", function () {
+                if (fileInput.files.length > 0) {
+                    fileNameInput.value = fileInput.files[0].name;
+                } else {
+                    fileNameInput.value = "";
+                }
+            });
+        }
+    });
+</script>

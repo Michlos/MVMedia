@@ -8,6 +8,12 @@
 
   <ItemGroup>
     <Compile Remove="Services\Interfaces\IApiService.cs" />
+    <Compile Remove="Views\Medias\AddMEdiaFileClient.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Medias\AddMediaClient - Cópia.cshtml" />
+    <Content Remove="Views\Medias\AddMediaFileClient.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

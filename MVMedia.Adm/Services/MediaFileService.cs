@@ -164,20 +164,32 @@ public class MediaFileService : IMediaFileService
 
     public async Task<ClientWithMediaFileDTO> GetMediaByClientId(int clientId)
     {
-        var client = _clientFactory.CreateClient("MVMediaAPI");
-        //TODO : Ajustar endpoint na API se necessário
-        var response = await client.GetAsync(apiEndpoint + $"GetMediaFilesByClientId/{clientId}");
+        var clientApi = _clientFactory.CreateClient("MVMediaAPI");
+        //[HttpGet("GetMediaFileByClientId/{clientId}")]
+        var response = await clientApi.GetAsync(apiEndpoint + $"GetMediaFileByClientId/{clientId}");
 
-        if (response.IsSuccessStatusCode)
+        if (!response.IsSuccessStatusCode)
         {
-            var apiResponse = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<ClientWithMediaFileDTO>(apiResponse, _options);
-            return result;
+            throw new Exception(clientApi + " - " + response.ReasonPhrase);
+        }
+        
+        using var stream = await response.Content.ReadAsStreamAsync();
+        using var reader = new StreamReader(stream);
+        var rawJson = await reader.ReadToEndAsync();
+
+        if (string.IsNullOrEmpty(rawJson))
+        {
+            return new ClientWithMediaFileDTO
+            {
+                Client = null,
+                MediaFiles = new List<MediaFileLIstItemDTO>()
+            };
         }
         else
         {
-            var error = await response.Content.ReadAsStringAsync();
-            throw new ApplicationException($"Erro ao buscar arquivos de mídia por cliente: {error}");
+           return JsonSerializer.Deserialize<ClientWithMediaFileDTO>(rawJson, _options);
         }
+
+
     }
 }

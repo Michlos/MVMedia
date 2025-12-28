@@ -3,6 +3,6 @@
     public class ClientWithMediaFileDTO
     {
         public ClientSummaryDTO Client { get; set; }
-        public List<MediaFileDTO> MediaFiles { get; set; }
+        public List<MediaFileLIstItemDTO> MediaFiles { get; set; }
     }
 }

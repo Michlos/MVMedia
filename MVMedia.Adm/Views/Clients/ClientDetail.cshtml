@@ -39,7 +39,7 @@
 </div>
 <div class="mb-3">
     <h3>Client Media</h3>
-    <a asp-controller="MediaFiles" asp-action="AddMediaClient" asp-route-clientId="@Model.Client.Id" class="btn btn-primary">Create New Media</a>
+    <a asp-controller="MediaFile" asp-action="AddMediaFileClient" asp-route-clientId="@Model.Client.Id" class="btn btn-primary">Create New Media</a>
     <hr />
     <table class="table table-striped mt-3">
         <thead>
@@ -56,10 +56,10 @@
                 foreach (var media in Model.MediaFiles)
                 {
                     <tr>
-                        <td>@media.Title</td>
-                        <td><a href="@media.Description" target="_blank">@media.Description</a></td>
+                        @* <td>@media.Id</td> *@
+                        <td><a href="@media.FileName" target="_blank">@media.FileName</a></td>
                         <td>
-                            <input type="checkbox" @(media.IsPublic ? "checked" : "") disabled />
+                            <input type="checkbox" @(media.IsActive? "checked" : "") disabled />
                         </td>
                         <td>
                             <a asp-controller="MediaFiles" asp-action="UpdateMedia" asp-route-id="@media.Id" class="btn btn-secondary">Edit</a>

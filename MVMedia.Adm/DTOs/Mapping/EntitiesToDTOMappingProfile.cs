@@ -10,5 +10,6 @@ public class EntitiesToDTOMappingProfile : Profile
         CreateMap<ClientViewModel, ClientSummaryDTO>();
         CreateMap<MediaViewModel, MediaListItemDTO>();
         CreateMap<MediaFileViewModel, MediaFileDTO>();
+        CreateMap<MediaFileViewModel, MediaFileLIstItemDTO>();
     }
 }

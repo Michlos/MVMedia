@@ -29,7 +29,7 @@ public class MediaFileController : Controller
     public async Task<ActionResult> AddMediaFileClient(int clientId)
     {
         var client = await _clientService.GetClientById(clientId);
-        var mediaFileVM = new MediaFileViewModel { ClientId = client.Id, ClientName = client.Name };
+        var mediaFileVM = new MediaFileViewModel { ClientId = client.Id, ClientName = client.Name};
         return View("AddMediaFileClient", mediaFileVM);
     }
 
@@ -39,6 +39,14 @@ public class MediaFileController : Controller
         if (ModelState.IsValid)
         {
             mediaFileVM.ClientId = clientId;
+
+            // Preenche o FileName e o FileSize usando o arquivo enviado
+            if (mediaFileVM.File != null)
+            {
+                mediaFileVM.FileName = mediaFileVM.File.FileName;
+                mediaFileVM.FileSize = mediaFileVM.File.Length;
+            }
+
             var result = await _mediaFileService.AddMediaFile(mediaFileVM);
             if (result != null)
                 return RedirectToAction("ClientDetail", "Clients", new { id = clientId });
@@ -50,6 +58,7 @@ public class MediaFileController : Controller
         }
         return View("AddMediaFileClient", mediaFileVM);
     }
+
 
     [HttpGet]
     public async Task<ActionResult<MediaFileViewModel>> GetMediaByClientId(int clientId)
