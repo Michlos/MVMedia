@@ -44,6 +44,9 @@ public class EntitiesToDTOMappingProfile : Profile
             .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
             .ReverseMap();
 
+        CreateMap<MediaList, MediaListDTO>()
+            .ForMember(dest => dest.URI, opt => opt.MapFrom(src => "wwwroot/Videos/" + src.Name + ".m3u"));
+
 
         //USER MAPS
         CreateMap<User, UserDTO>().ReverseMap();

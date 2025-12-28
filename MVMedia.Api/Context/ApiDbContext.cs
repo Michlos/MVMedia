@@ -13,5 +13,6 @@ public class ApiDbContext : DbContext
     public DbSet<Media> Medias { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<MediaFile> MediaFiles { get; set; }
+    public DbSet<MediaList> MediaLists { get; set; }
 
 }

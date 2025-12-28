@@ -1,0 +1,21 @@
+Admin:
+
+Clientes
+--------
+1. Listar todos os clintes; 
+2. Editar Cliente (ativar/desativar/alter geral);
+	2.1. No detalhe do clinte:
+		Mídia (vídeos):
+		---------------
+		2.1.1. Listar todas as mídias do cliente;
+		2.1.2. Adicionar mídia ao cliente;
+		2.1.3. Poder ativar ou destivar mídia do cliente (Editar mídia)
+		2.1.4. Poder excluir mídia do clinte se inativa;
+3. Poder ativar ou desativar os clientes
+	3.1 Excluir Cliente (inactive client/cascade inactive mídias_client)
+4. Listar todas as mídias ativas (order by include midia);
+
+
+TODO TODO
+==========
+5. Opção do Admin criar lista de reprodução.
