@@ -29,7 +29,8 @@ public class MediaListController : ControllerBase
     {
         ICollection<MediaFile> mediaListFiles = await _mediaFileService.GetAllMediaFiles();
 
-        mediaList.Name = DateTime.UtcNow.ToString("yyyyMMdd_HHmmss");
+        //mediaList.Name = DateTime.UtcNow.ToString("yyyyMMdd_HHmmss");
+        mediaList.Name = "index";
 
         if (mediaList == null || string.IsNullOrWhiteSpace(mediaList.Name))
             return BadRequest("Invalid media list data.");
