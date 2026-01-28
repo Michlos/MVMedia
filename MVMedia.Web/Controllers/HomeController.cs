@@ -2,37 +2,40 @@ using Microsoft.AspNetCore.Mvc;
 using MVMedia.Web.Models;
 using MVMedia.Web.Service;
 using System.Diagnostics;
+using System.Text.Json; // Adicionado para JsonSerializer
 
 namespace MVMedia.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly MediaService _mediaService;
-        public HomeController(MediaService mediaService)
+        private readonly IConfiguration _configuration; // Injete a configuração
+
+        // Cache da instância de JsonSerializerOptions para evitar CA1869
+        private static readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+        public HomeController(MediaService mediaService, IConfiguration configuration)
         {
             _mediaService = mediaService;
+            _configuration = configuration;
         }
         public async Task<IActionResult> Index()
         {
-            var media = await _mediaService.GetAllMedia();
-            return View(media);
+            // Pegue a URL base da API do appsettings.json
+            var apiBaseUrl = _configuration["ServiceUri:MVMediaAPI"];
+            var apiUrl = $"{apiBaseUrl}/api/MediaList/GetActiveMediaList";
+
+            using var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(apiUrl);
+            if (!response.IsSuccessStatusCode)
+                return View(null);
+
+            var json = await response.Content.ReadAsStringAsync();
+            var mediaList = JsonSerializer.Deserialize<MediaViewModel>(json, _jsonOptions);
+
+            // Passe o objeto para a view
+            return View(mediaList);
         }
-        //private readonly ILogger<HomeController> _logger;
-
-        //public HomeController(ILogger<HomeController> logger)
-        //{
-        //    _logger = logger;
-        //}
-
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
-
-        //public IActionResult Privacy()
-        //{
-        //    return View();
-        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

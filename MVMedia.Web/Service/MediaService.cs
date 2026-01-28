@@ -8,7 +8,7 @@ namespace MVMedia.Web.Service
     public class MediaService : IMediaService
     {
         private readonly IHttpClientFactory _clientFactory;
-        private const string apiEndpoint = "/api/media/";
+        private const string apiEndpoint = "/api/MediaList/";
         private readonly JsonSerializerOptions _options;
         private MediaViewModel? mediaVM;
         private IEnumerable<MediaViewModel>? mediaListVM;
@@ -21,7 +21,7 @@ namespace MVMedia.Web.Service
         public async Task<IEnumerable<MediaViewModel>> GetAllMedia()
         {
             var client = _clientFactory.CreateClient("MVMediaAPI");
-            var response = await client.GetAsync(apiEndpoint + "GetAllMedia");
+            var response = await client.GetAsync(apiEndpoint + "GetActiveMediaList");
             if (response.IsSuccessStatusCode)
             {
                 var apiResponse = await response.Content.ReadAsStringAsync();
