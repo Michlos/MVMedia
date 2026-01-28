@@ -1,18 +1,22 @@
 ﻿@model IEnumerable<MVMedia.Adm.Models.ClientViewModel>
+@using MVMedia.Adm.Models
 
 
 <h2>Clients</h2>
 <hr />
 
 <div class="row">
-    <div class="col-md-12">
-        <div>
-            <div class="fa-pull-left">
-                <a asp-action="AddClient" class="btn btn-primary">
-                    <span>+New Client</span>
-                </a>
-            </div>
+    <div class="col-md-6">
+        <div class="fa-pull-left">
+            <a asp-action="AddClient" class="btn btn-primary">
+                <span>+New Client</span>
+            </a>
         </div>
+    </div>
+    <div class="col-md-6 text-end">
+        <a asp-controller="MediaList" asp-action="AddMediaList" class="btn btn-info">
+            <span>Update List Media</span>
+        </a>
     </div>
 </div>
 <br />
@@ -52,3 +56,16 @@
         </tbody>
     </table>
 </div>
+
+@{
+    ViewData["Title"] = "Media List";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        window.onload = function() {
+            alert('@TempData["SuccessMessage"]');
+        }
+    </script>
+}

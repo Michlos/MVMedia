@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Index.cshtml" />
     <Content Remove="Views\Medias\AddMediaClient - Cópia.cshtml" />
     <Content Remove="Views\Medias\AddMediaFileClient.cshtml" />
   </ItemGroup>
