@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 *.mp4
 *.m3u
+/MVMedia.Web/Views/Home/Index.cshtml
