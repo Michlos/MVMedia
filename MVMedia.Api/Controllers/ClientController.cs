@@ -84,6 +84,7 @@ public class ClientController : Controller
             return BadRequest("Invalid client data");
         
         await _clientService.UpdateClient(clientDTO);
+
         return Ok(clientDTO);
 
     }
