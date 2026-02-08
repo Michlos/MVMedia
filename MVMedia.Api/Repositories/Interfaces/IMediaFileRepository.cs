@@ -1,4 +1,5 @@
 ﻿using MVMedia.Api.Models;
+using System.Threading.Tasks;
 
 namespace MVMedia.Api.Repositories.Interfaces;
 
@@ -10,4 +11,6 @@ public interface IMediaFileRepository
     Task<bool> DeleteMediaFile(Guid id);
     Task<ICollection<MediaFile>> GetAllMediaFiles();
     Task<ICollection<MediaFile>> GetMediaFilesByClientId(int clientId);
+    Task DeactivateMediaFileByClientId(int clientId);
+    Task ActivateMediaFileByClientId(int clientId);
 }

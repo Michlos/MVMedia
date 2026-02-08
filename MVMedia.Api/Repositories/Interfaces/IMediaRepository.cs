@@ -10,6 +10,6 @@ public interface IMediaRepository
     Task<IEnumerable<Media>> GetAllMedia();
     Task<Media> GetMediaById(int id);
     Task<IEnumerable<Media>> GetMediaByClientId(int clientId);
-
     Task<bool> SaveAllAsync();
+    Task DeactivateMediaByClientId(int clientId);
 }

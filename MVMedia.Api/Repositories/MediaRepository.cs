@@ -69,4 +69,16 @@ public class MediaRepository : IMediaRepository
         return await _context.SaveChangesAsync() > 0;
     }
 
+    public async Task DeactivateMediaByClientId(int clientId)
+    {
+        var medias = await GetMediaByClientId(clientId);
+        //var medias = await _context.Medias.Where(m => m.ClientId == clientId && m.IsActive).ToListAsync();
+        foreach (var media in medias)
+        {
+            media.IsActive = false;
+            media.UpdatedAt = DateTime.UtcNow;
+        }
+        await _context.SaveChangesAsync();
+    }
+
 }

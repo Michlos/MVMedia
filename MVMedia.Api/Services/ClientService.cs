@@ -10,11 +10,13 @@ namespace MVMedia.Api.Services;
 public class ClientService : IClientService
 {
     public readonly IClientRepository _clientRepository;
+    public readonly IMediaFileRepository _mediaFileRepository;
     public readonly IMapper _mapper;
 
-    public ClientService(IClientRepository clientRepository, IMapper mapper)
+    public ClientService(IClientRepository clientRepository, IMediaFileRepository mediaFileRepository, IMapper mapper)
     {
         _clientRepository = clientRepository;
+        _mediaFileRepository = mediaFileRepository;
         _mapper = mapper;
     }
 
@@ -39,9 +41,20 @@ public class ClientService : IClientService
 
     public async Task<ClientUpdateDTO> UpdateClient(ClientUpdateDTO clientUpdateDTO)
     {
-        
+        var existingClient = await _clientRepository.GetClientById(clientUpdateDTO.Id);
+
+        bool isDeactivating = existingClient.IsActive && !clientUpdateDTO.IsActive;
+
         var clientUpdated = await _clientRepository.UpdateClient(clientUpdateDTO);
-        return _mapper.Map<ClientUpdateDTO>(clientUpdated);
+        if (isDeactivating)
+        {
+            await _mediaFileRepository.DeactivateMediaFileByClientId(clientUpdated.Id);
+        }
+        else
+        {
+            await _mediaFileRepository.ActivateMediaFileByClientId(clientUpdated.Id);
+        }
+            return _mapper.Map<ClientUpdateDTO>(clientUpdated);
 
     }
 

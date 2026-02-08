@@ -49,7 +49,8 @@ public class MediaFileRepository : IMediaFileRepository
 
     public async Task<ICollection<MediaFile>> GetAllMediaFiles()
     {
-        return await _context.MediaFiles.ToListAsync();
+        //return await _context.MediaFiles.ToListAsync();
+        return await _context.MediaFiles.Where(mf => mf.IsActive).ToListAsync();
     }
 
     public async Task<MediaFile> GetMediaFileById(Guid id)
@@ -95,5 +96,28 @@ public class MediaFileRepository : IMediaFileRepository
         existingMediaFile.UpdatedAt = DateTime.UtcNow;
         await _context.SaveChangesAsync();
         return existingMediaFile;
+    }
+
+    public async Task DeactivateMediaFileByClientId(int clientId)
+    {
+        var mediaFiles = await GetMediaFilesByClientId(clientId);
+        foreach (var mediaFile in mediaFiles)
+        {
+            mediaFile.IsActive = false;
+        }
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task ActivateMediaFileByClientId(int clientId)
+    {
+        var mediaFiles = await GetMediaFilesByClientId(clientId);
+        if (mediaFiles != null || mediaFiles.Count != 0) {
+
+            foreach (var mediaFile in mediaFiles)
+            {
+                mediaFile.IsActive = true;
+            }
+            await _context.SaveChangesAsync();
+        }
     }
 }
