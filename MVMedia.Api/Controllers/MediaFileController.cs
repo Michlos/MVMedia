@@ -117,5 +117,13 @@ public class MediaFileController : ControllerBase
         return Ok(updatedMediaFile);
     }
 
+    [HttpDelete("DeleteMediaFile/{id}")]
+    public async Task<ActionResult> DeleteMediaFile(Guid id)
+    {
+        var success = await _mediaFileService.DeleteMediaFile(id);
+        if (!success)
+            return NotFound("Arquivo de mídia não encontrado ou falha ao deletar.");
+        return NoContent();
+    }
 
 }

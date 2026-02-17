@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MVMedia.Adm.DTOs;
 using MVMedia.Adm.Models;
 using MVMedia.Adm.Services.Interfaces;
 
@@ -29,7 +30,7 @@ public class MediaFileController : Controller
     public async Task<ActionResult> AddMediaFileClient(int clientId)
     {
         var client = await _clientService.GetClientById(clientId);
-        var mediaFileVM = new MediaFileViewModel { ClientId = client.Id, ClientName = client.Name};
+        var mediaFileVM = new MediaFileViewModel { ClientId = client.Id, ClientName = client.Name };
         return View("AddMediaFileClient", mediaFileVM);
     }
 
@@ -59,6 +60,30 @@ public class MediaFileController : Controller
         return View("AddMediaFileClient", mediaFileVM);
     }
 
+    //[HttpGet]
+    //public async Task<ActionResult<MediaFileViewModel>> UpdateMediaFile([FromBody] MediaFileViewModel mediaFile)
+    //{
+    //    var result = await _mediaFileService.UpdateMediaFile(mediaFile, mediaFile.FileName);
+    //    if(result is null)
+    //        return View("Error", new string[] { "Something went wrong while processing your request" });
+    //    return View(result);
+    //}
+
+    //[HttpPost]
+    //public async Task<ActionResult> UpdateMediaFile(MediaFileViewModel mediaFileVM)
+    //{
+    //    if (ModelState.IsValid)
+    //    {
+    //        var result = await _mediaFileService.UpdateMediaFile(mediaFileVM, mediaFileVM.FileName);
+    //        if(result is not null)
+    //            return RedirectToAction(nameof(Index));
+    //        else
+    //            return View("Error", new string[] { "Something went wrong while processing your request" });
+
+    //    }
+    //    return View(mediaFileVM);
+    //}
+
 
     [HttpGet]
     public async Task<ActionResult<MediaFileViewModel>> GetMediaByClientId(int clientId)
@@ -68,6 +93,16 @@ public class MediaFileController : Controller
         if (result == null || result.MediaFiles == null || !result.MediaFiles.Any())
             return View("Error", new string[] { "Something went wrong while processing your request" });
         return View("Index", result.MediaFiles);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<MediaFileViewModel>> DeleteMediaFile(Guid id)
+    {
+        var mediaFileId = await _mediaFileService.GetMediaFileById(id);
+        var result = await _mediaFileService.DeleteMediaFile(id);
+        if (!result)
+            return View("Error", new string[] { "Something went wrong while processing your request" });
+        return RedirectToAction("ClientDetail", "Clients", new {id = mediaFileId});
     }
 
 

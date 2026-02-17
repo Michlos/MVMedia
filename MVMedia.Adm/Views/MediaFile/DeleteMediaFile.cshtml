@@ -1,0 +1,44 @@
+﻿@model MVMedia.Adm.Models.MediaFileViewModel
+@using MVMedia.Adm.Models
+
+
+
+
+<h2>Delete Media File</h2>
+<h4>Are you shure want to delete this?</h4>
+<h5>Client: @Model.ClientName</h5>
+<div class="panel panel-default">
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(Model => Model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(Model => Model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(Model => Model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(Model => Model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(Model => Model.FileName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(Model => Model.FileName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(Model => Model.IsActive)
+        </dt>
+        <dd>
+            @Html.DisplayFor(Model => Model.IsActive)
+        </dd>
+
+    </dl>
+    <hr />
+    <form asp-action="DeleteMediaFileClient">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-controller="Clients" asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>

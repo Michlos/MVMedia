@@ -100,9 +100,20 @@ public class MediaFileService : IMediaFileService
         }
     }
 
-    public Task<bool> DeleteMediaFile(Guid id)
+    public async Task<bool> DeleteMediaFile(Guid id)
     {
-        throw new NotImplementedException();
+        var client = _clientFactory.CreateClient("MvMediaAPI");
+        var response = await client.GetAsync(apiEndpoint + $"DeleteMediaFile/{id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            return true;
+        }
+        else
+        {
+            var error = await response.Content.ReadAsStringAsync();
+            throw new ApplicationException($"Erro ao deletar arquivo de mídia: {error}");
+        }
     }
 
     public async Task<MediaFileViewModel> GetMediaFileById(Guid id)

@@ -62,8 +62,8 @@
                             <input type="checkbox" @(media.IsActive? "checked" : "") disabled />
                         </td>
                         <td>
-                            <a asp-controller="MediaFiles" asp-action="UpdateMedia" asp-route-id="@media.Id" class="btn btn-secondary">Edit</a>
-                            @* <a asp-controller="Medias" asp-action="DeleteMedia" asp-route-id="@media.Id" class="btn btn-danger">Delete</a> *@
+                            @* <a asp-controller="MediaFile" asp-action="UpdateMediaFileClient" asp-route-id="@media.Id" class="btn btn-secondary">Edit</a> *@
+                            <a asp-controller="MediaFile" asp-action="DeleteMediaFile" asp-route-id="@media.Id" class="btn btn-danger">Delete</a>
                             @*                             <form method="post" asp-asp-controller="Medias" asp-action="DeleteMedia" asp-route-id="@media.Id" class="d-inline">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form> *@
