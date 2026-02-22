@@ -13,39 +13,64 @@ namespace MVMedia.Api.Controllers;
 
 public class UserController : Controller
 {
-    
+
     private readonly IAuthtenticate _authenticateService;
     private readonly IUserService _userService;
 
     public UserController(IAuthtenticate authtenticate, IUserService userService)
     {
-        
+
         _authenticateService = authtenticate;
         _userService = userService;
 
     }
 
-   
+
 
     [HttpPost("register")]
     public async Task<ActionResult<UserToken>> AddUser(UserDTO userDTO)
     {
-        if (!await _userService.IsAdmin(User.GetUserId()))
-            return Unauthorized("You are not authorized to access this resource");
+        //PRIMEIRO USUÁRIO
+        var existingUsers = await _userService.GetAllUsers();
+        if (!existingUsers.Any())
+        {
 
-        if (userDTO == null)
-            return BadRequest("Invalid user data.");
-        
-        var existingUser = await _authenticateService.UserExists(userDTO.Login, userDTO.Email);
-        if (existingUser)
-            return BadRequest("User already exists.");
+            //if (!await _userService.IsAdmin(User.GetUserId()))
+            //    return Unauthorized("You are not authorized to access this resource");
 
-        var user = await _userService.Add(userDTO);
-        if (user == null)
-            return BadRequest("Error creating user.");
-        
-        var token = _authenticateService.GenerateToken(user.Id, user.Login);
-        return new UserToken { Token = token };
+            if (userDTO == null)
+                return BadRequest("Invalid user data.");
+
+            //var existingUser = await _authenticateService.UserExists(userDTO.Login, userDTO.Email);
+            //if (existingUser)
+            //    return BadRequest("User already exists.");
+
+            userDTO.IsAdmin = true;
+            var user = await _userService.Add(userDTO);
+            if (user == null)
+                return BadRequest("Error creating user.");
+
+            var token = _authenticateService.GenerateToken(user.Id, user.Login);
+            return new UserToken { Token = token };
+        }
+        else
+        {
+            if (userDTO == null)
+                return BadRequest("Invalid user data.");
+
+            var existingUser = await _authenticateService.UserExists(userDTO.Login, userDTO.Email);
+            if (existingUser)
+                return BadRequest("User already exists.");
+
+            var user = await _userService.Add(userDTO);
+            if (user == null)
+                return BadRequest("Error creating user.");
+
+            var token = _authenticateService.GenerateToken(user.Id, user.Login);
+            return new UserToken { Token = token };
+        }
+
+
     }
 
     [HttpPost("login")]
@@ -61,10 +86,10 @@ public class UserController : Controller
         if (!result) return Unauthorized("User or Password invalid");
 
         var user = await _authenticateService.GetUserByUserName(loginModel.Username);
-        
+
         var token = _authenticateService.GenerateToken(user.Id, user.Login);
 
-        return new UserToken 
+        return new UserToken
         {
             Token = token
         };

@@ -9,6 +9,10 @@ namespace MVMedia.Api.DTOs;
 public class UserDTO
 {
     public int Id { get; set; }
+
+    public int CompanyId { get; set; }
+
+
     [Required(ErrorMessage = "Name is required")]
     [MaxLength(250, ErrorMessage = "Name cannot exceed 200 characters")]
     public string Name { get; set; }

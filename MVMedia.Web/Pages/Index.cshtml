@@ -5,7 +5,7 @@
 }
 
 <div class="container mt-4">
-    <h1 class="display-5 mb-4">Player de Vídeos</h1>
+    @* <h1 class="display-5 mb-4">Player de Vídeos</h1> *@
 
     @if (!string.IsNullOrEmpty(Model.ApiError))
     {
@@ -23,13 +23,13 @@
                 Seu navegador não suporta o elemento de vídeo.
             </video>
             <div class="mt-3">
-                <span id="videoTitle" class="fw-bold">@Model.MediaFiles[0].Title</span>
-                <span id="videoDescription" class="ms-2">@Model.MediaFiles[0].Description</span>
+                <span hidden id="videoTitle" class="fw-bold">@Model.MediaFiles[0].Title</span>
+                <span hidden id="videoDescription" class="ms-2">@Model.MediaFiles[0].Description</span>
             </div>
-            <div class="mt-3">
+@*             <div class="mt-3">
                 <button id="prevBtn" class="btn btn-secondary me-2">Anterior</button>
                 <button id="nextBtn" class="btn btn-secondary">Próximo</button>
-            </div>
+            </div> *@
         </div>
         <script>
             const videos = [
@@ -46,14 +46,26 @@
             const player = document.getElementById('mainVideoPlayer');
             const title = document.getElementById('videoTitle');
             const desc = document.getElementById('videoDescription');
+            function tryFullscreen() {
+                if (player.requestFullscreen) {
+                    player.requestFullscreen();
+                } else if (player.webkitRequestFullscreen) { // Safari
+                    player.webkitRequestFullscreen();
+                } else if (player.msRequestFullscreen) { // IE11
+                    player.msRequestFullscreen();
+                }
+            }
+
             player.addEventListener('ended', function () {
                 current = (current + 1) % videos.length;
                 player.src = videos[current].src;
                 title.textContent = videos[current].title;
                 desc.textContent = videos[current].description;
                 player.play();
+                tryFullscreen();
             });
             player.play();
+            tryFullscreen();
         </script>
     }
 </div>

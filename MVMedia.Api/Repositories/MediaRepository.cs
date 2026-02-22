@@ -81,4 +81,13 @@ public class MediaRepository : IMediaRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task DeleteMediaById(int id)
+    {
+        var media = await GetMediaById(id);
+        if (media == null)
+            throw new ArgumentException($"Media with id {id} not found.");
+        _context.Medias.Remove(media);
+        await _context.SaveChangesAsync();
+    }
+
 }

@@ -59,4 +59,9 @@ public class MediaService : IMediaSerivce
         var mediaUpdated = await _mediaRepository.UpdateMedia(mediaUpdateDTO);
         return _mapper.Map<MediaUpdateDTO>(mediaUpdated);
     }
+
+    public async Task DeleteMediaById(int id)
+    {
+        await _mediaRepository.DeleteMediaById(id);
+    }
 }

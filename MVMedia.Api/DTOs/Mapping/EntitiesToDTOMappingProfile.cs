@@ -50,6 +50,15 @@ public class EntitiesToDTOMappingProfile : Profile
 
         //USER MAPS
         CreateMap<User, UserDTO>().ReverseMap();
+        CreateMap<User, UserDTO>().ReverseMap();
+        CreateMap<User, UserDTO>().ReverseMap();
 
+        //COMPANY MAPS
+        CreateMap<CompanyUpdateDTO, Company>().ReverseMap();
+        CreateMap<CompanyAddDTO, Company>()
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
+            .ReverseMap();
     }
 }

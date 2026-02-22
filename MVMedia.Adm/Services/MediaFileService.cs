@@ -129,6 +129,8 @@ public class MediaFileService : IMediaFileService
         }
         else
         {
+            //TODO: VERIFICAR SE ESTÁ NO BANCO E REMOVER DO BANCO
+
             var error = await response.Content.ReadAsStringAsync();
             throw new ApplicationException($"Erro ao buscar arquivo de mídia: {error}");
         }

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using MVMedia.Api.DTOs;
 using MVMedia.Api.Identity;
+using MVMedia.Api.Models;
 using MVMedia.Api.Services.Interfaces;
-using MVMedia.API.Models;
 
 namespace MVMedia.Api.Controllers;
 

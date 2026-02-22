@@ -2,8 +2,8 @@
 
 using MVMedia.Api.Context;
 using MVMedia.Api.DTOs;
+using MVMedia.Api.Models;
 using MVMedia.Api.Repositories.Interfaces;
-using MVMedia.API.Models;
 
 using System.Threading.Tasks;
 

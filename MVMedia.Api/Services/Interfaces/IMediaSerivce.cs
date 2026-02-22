@@ -10,5 +10,6 @@ public interface IMediaSerivce
     Task<IEnumerable<MediaGetDTO>> GetAllMedia();
     Task<MediaGetDTO> GetMediaById(int id);
     Task<ClientWithMediaDTO> GetMediaByClientId(int clientId);
+    Task DeleteMediaById(int id);
 
 }

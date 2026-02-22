@@ -1,5 +1,5 @@
 ﻿using MVMedia.Api.DTOs;
-using MVMedia.API.Models;
+using MVMedia.Api.Models;
 
 namespace MVMedia.Api.Repositories.Interfaces;
 

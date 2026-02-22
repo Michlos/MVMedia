@@ -26,6 +26,7 @@ builder.Services.AddScoped<IMediaRepository, MediaRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMediaFileRepository, MediaFileRepository>();
 builder.Services.AddScoped<IMediaListRepository, MediaListRepository>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 
 //SERVICES
 builder.Services.AddScoped<IClientService, ClientService>();
@@ -34,6 +35,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthtenticate, AuthenticateService>();
 builder.Services.AddScoped<IMediaFileService, MediaFileService>();
 builder.Services.AddScoped<IMediaListService, MediaListService>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
 
 //ADD SERVICES AUTOMAPPER
 builder.Services.AddAutoMapper(cfg => cfg.AddProfile<EntitiesToDTOMappingProfile>());

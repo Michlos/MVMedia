@@ -13,6 +13,9 @@ public class User
     public bool IsActive { get; set; }
     public bool IsAdmin { get; set; }
 
+    public int CompanyId { get; set; }
+    //public  virtual Company Company { get; set; }
+
     public User(int id, string name, string login, string email)
     {
         Id = id;

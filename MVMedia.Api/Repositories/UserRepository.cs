@@ -27,10 +27,10 @@ public class UserRepository : IUserRepository
     public async Task<IEnumerable<User>> GetAllUsers()
     {
         var users = await _context.Users.ToListAsync();
-        if (users == null || !users.Any())
-        {
-            throw new ArgumentException("No users found.");
-        }
+        //if (users == null || !users.Any())
+        //{
+        //    throw new ArgumentException("No users found.");
+        //}
         return users;
     }
 

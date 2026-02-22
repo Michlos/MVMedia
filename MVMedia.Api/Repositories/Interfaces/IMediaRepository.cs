@@ -12,4 +12,5 @@ public interface IMediaRepository
     Task<IEnumerable<Media>> GetMediaByClientId(int clientId);
     Task<bool> SaveAllAsync();
     Task DeactivateMediaByClientId(int clientId);
+    Task DeleteMediaById(int id);
 }

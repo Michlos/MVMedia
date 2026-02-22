@@ -3,7 +3,7 @@
 using MVMedia.Api.DTOs;
 using MVMedia.Api.Repositories.Interfaces;
 using MVMedia.Api.Services.Interfaces;
-using MVMedia.API.Models;
+using MVMedia.Api.Models;
 
 namespace MVMedia.Api.Services;
 
