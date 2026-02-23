@@ -13,7 +13,7 @@ namespace MVMedia.Api.Controllers;
 
 public class CompanyController : Controller
 {
-    
+
     private readonly ICompanyService _companyService;
     private readonly IAuthtenticate _authtenticateService;
     private readonly IUserService _userService;
@@ -50,23 +50,21 @@ public class CompanyController : Controller
     {
         //EXIST COMPANY
         var existingCompany = await _companyService.GetAllCompanies();
-        if (existingCompany.Any(c => c.Name.ToLower() == company.Name.ToLower()))
+        if (existingCompany.Any())
         {
+            if (!User.Identity?.IsAuthenticated ?? true)
+                return Unauthorized("Usuário não autenticado.");
+
             if (!await _userService.IsAdmin(User.GetUserId()))
-            return Unauthorized("You are not authorized to access this resource.");
-            
+                return Unauthorized("You are not authorized to access this resource.");
             var addedCompany = await _companyService.AddCompany(company);
             return CreatedAtAction(nameof(GetCompanyById), new { id = addedCompany.Id }, addedCompany);
-
         }
         else
         {
             var addedCompany = await _companyService.AddCompany(company);
             return CreatedAtAction(nameof(GetCompanyById), new { id = addedCompany.Id }, addedCompany);
         }
-
-
-
     }
 
     [HttpPut]
@@ -74,7 +72,7 @@ public class CompanyController : Controller
     {
         if (!await _userService.IsAdmin(User.GetUserId()))
             return Unauthorized("You are not authorized to access this resource.");
-        
+
         var updatedCompany = await _companyService.UpdateCompany(companyDTO);
         if (updatedCompany == null)
             return NotFound("Company not found.");
