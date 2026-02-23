@@ -28,9 +28,25 @@ public class CompanyController : Controller
     [HttpGet("GetAllCompanies")]
     public async Task<ActionResult<IEnumerable<Company>>> GetAllCompanies()
     {
-        //if (!await _userService.IsAdmin(User.GetUserId()))
-        //    return Unauthorized("You are not authorized to access this resource.");
         var companies = await _companyService.GetAllCompanies();
+        if (companies.Any())
+        {
+            var users = await _userService.GetAllUsers();
+            if (users.Any())
+            {
+                if (!User.Identity?.IsAuthenticated ?? true)
+                    return Unauthorized("Usuário não autenticado.");
+
+                // Usuário está logado: filtra Companies pelo CompanyId do usuário
+                var userId = User.GetUserId();
+                var user = await _userService.GetUser(userId);
+                if (user == null)
+                    return Unauthorized("Usuário não encontrado.");
+                var filteredCompanies = companies.Where(c => c.Id == user.CompanyId);
+                return Ok(filteredCompanies);
+            }
+        }
+        // Se não existe Company ou usuário, retorna todas
         return Ok(companies);
     }
 

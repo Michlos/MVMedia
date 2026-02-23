@@ -12,10 +12,12 @@ namespace MVMedia.Api.Controllers;
 public class MediaFileController : ControllerBase
 {
     private readonly IMediaFileService _mediaFileService;
+    private readonly IUserService _userService;
 
-    public MediaFileController(IMediaFileService mediaFileService)
+    public MediaFileController(IMediaFileService mediaFileService, IUserService userService)
     {
         _mediaFileService = mediaFileService;
+        _userService = userService;
     }
 
     [HttpPost("AddMediaFile")]
