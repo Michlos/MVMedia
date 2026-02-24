@@ -33,6 +33,23 @@ public class ClientController : Controller
             return Unauthorized("You are not authorized to access this resource");
 
         var clients = await _clientService.GetAllClients();
+        if (clients.Any())
+        {
+            var users = await _userService.GetAllUsers();
+            if (users.Any())
+            {
+                if (!User.Identity?.IsAuthenticated ?? false)
+                    return Unauthorized("You are not authenticated to access this resource");
+
+                var userId = User.GetUserId();
+                var user = await _userService.GetUser(userId);
+                if (user == null)
+                    return Unauthorized("User not found");
+
+                var filteredClients = clients.Where(c => c.CompanyId == user.CompanyId).ToList();
+                return Ok(filteredClients);
+            }
+        }
         return Ok(clients);
 
     }

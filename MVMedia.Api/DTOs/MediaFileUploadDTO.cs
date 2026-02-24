@@ -12,4 +12,5 @@ public class MediaFileUploadDTO
     public IFormFile File { get; set; }
     public bool IsPublic { get; set; }
     public int ClientId { get; set; }
+    public int CompanyId { get; set; }
 }

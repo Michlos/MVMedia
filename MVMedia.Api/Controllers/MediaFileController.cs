@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVMedia.Api.DTOs;
+using MVMedia.Api.Identity;
 using MVMedia.Api.Models;
 using MVMedia.Api.Services.Interfaces;
 
@@ -37,7 +38,8 @@ public class MediaFileController : ControllerBase
             UploadedAt = DateTime.UtcNow,
             IsPublic = dto.IsPublic,
             IsActive = true,
-            ClientId = dto.ClientId
+            ClientId = dto.ClientId,
+            CompanyId = dto.CompanyId
         };
 
         // Salva no banco
@@ -59,9 +61,28 @@ public class MediaFileController : ControllerBase
     [HttpGet("ListActiveMediaFiles")]
     public async Task<ActionResult<IEnumerable<MediaFile>>> ListActiveMediaFiles()
     {
-        var allMediaFiles = await _mediaFileService.GetAllMediaFiles();
-        var activeMediaFiles = allMediaFiles.Where(m => m.IsActive).ToList();
-        return Ok(activeMediaFiles);
+        if (!User.Identity.IsAuthenticated)
+        {
+            return Unauthorized("Usuário não autenticado.");
+        }
+        else
+        {
+            var userId = User.GetUserId();
+            var user = await _userService.GetUser(userId);
+
+            var allMediaFiles = await _mediaFileService.GetAllMediaFiles();
+            var activeMediaFiles = allMediaFiles.Where(m => m.IsActive).ToList();
+            var filteredMediaFiles = activeMediaFiles.Where(m => m.CompanyId == user.CompanyId).ToList();
+            return Ok(filteredMediaFiles);
+        }
+
+
+        //var allMediaFiles = await _mediaFileService.GetAllMediaFiles();
+        //var activeMediaFiles = allMediaFiles.Where(m => m.IsActive).ToList();
+        //return Ok(activeMediaFiles);
+
+
+
     }
 
     [HttpGet("GetMediaFileByClientId/{clientId}")]

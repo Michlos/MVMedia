@@ -57,6 +57,7 @@ public class MediaFileService : IMediaFileService
         form.Add(new StringContent(mediaFile.Description ?? ""), "Description");
         form.Add(new StringContent(mediaFile.IsPublic.ToString()), "IsPublic");
         form.Add(new StringContent(mediaFile.ClientId.ToString()), "ClientId");
+        form.Add(new StringContent(mediaFile.CompanyId.ToString()), "CompanyId");
 
         // Adiciona o arquivo
         if (!string.IsNullOrEmpty(mediaFile.FileName) && mediaFile.FileSize > 0)

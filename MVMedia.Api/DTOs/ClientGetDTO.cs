@@ -7,6 +7,8 @@ public class ClientGetDTO
     public int Id { get; set; }
     [Required]
     [MaxLength(200)]
+
+    public int CompanyId { get; set; }
     public string Name { get; set; }
     public string? CPF { get; set; }
     public string? CNPJ { get; set; }

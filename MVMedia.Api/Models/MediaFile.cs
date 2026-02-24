@@ -34,6 +34,8 @@ public class MediaFile
     public bool IsActive { get; set; }
     public int ClientId { get; set; }
     public virtual Client Client { get; set; }
+    public int CompanyId { get; set; }
+    //public virtual Company Company { get; set; }
 
 
 }
