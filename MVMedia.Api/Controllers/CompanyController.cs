@@ -28,6 +28,9 @@ public class CompanyController : Controller
     [HttpGet("GetAllCompanies")]
     public async Task<ActionResult<IEnumerable<Company>>> GetAllCompanies()
     {
+
+
+
         var companies = await _companyService.GetAllCompanies();
         if (companies.Any())
         {
@@ -37,18 +40,30 @@ public class CompanyController : Controller
                 if (!User.Identity?.IsAuthenticated ?? true)
                     return Unauthorized("Usuário não autenticado.");
 
+
+
+
                 // Usuário está logado: filtra Companies pelo CompanyId do usuário
                 var userId = User.GetUserId();
                 var user = await _userService.GetUser(userId);
                 if (user == null)
                     return Unauthorized("Usuário não encontrado.");
-                var filteredCompanies = companies.Where(c => c.Id == user.CompanyId);
-                return Ok(filteredCompanies);
+
+                if (!user.IsAdmin)
+                {
+                    var filteredCompanies = companies.Where(c => c.Id == user.CompanyId);
+                    return Ok(filteredCompanies);
+                }
+                else
+                {
+                    // Usuário é admin: retorna todas as Companies
+                    return Ok(companies);
+                }
             }
         }
-        // Se não existe Company ou usuário, retorna todas
         return Ok(companies);
     }
+        // Se não existe Company ou usuário, retorna todas
 
     [HttpGet("GetCompany/{id}")]
     public async Task<ActionResult<Company>> GetCompanyById(int id)

@@ -1,10 +1,11 @@
-
-
 var builder = WebApplication.CreateBuilder(args);
+
+// Adiciona os serviços necessários para autenticação via token
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<BearerTokenHandler>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
 
 // Permitir certificados SSL não confiáveis apenas em desenvolvimento
 if (builder.Environment.IsDevelopment())
@@ -14,11 +15,13 @@ if (builder.Environment.IsDevelopment())
             new HttpClientHandler
             {
                 ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-            });
+            })
+        .AddHttpMessageHandler<BearerTokenHandler>();
 }
 else
 {
-    builder.Services.AddHttpClient("Default", client => { });
+    builder.Services.AddHttpClient("Default", client => { })
+        .AddHttpMessageHandler<BearerTokenHandler>();
 }
 
 var app = builder.Build();
