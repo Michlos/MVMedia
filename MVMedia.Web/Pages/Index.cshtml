@@ -47,6 +47,9 @@
             const title = document.getElementById('videoTitle');
             const desc = document.getElementById('videoDescription');
             function tryFullscreen() {
+                if (document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement) {
+                    return;
+                }
                 if (player.requestFullscreen) {
                     player.requestFullscreen();
                 } else if (player.webkitRequestFullscreen) { // Safari
@@ -56,16 +59,27 @@
                 }
             }
 
+            let fullscreenRequested = false;
+            player.addEventListener('canplay', function () {
+                if (!fullscreenRequested) {
+                    tryFullscreen();
+                    fullscreenRequested = true;
+                }
+            });
+
+            player.addEventListener('play', function () {
+                tryFullscreen();
+            });
+
             player.addEventListener('ended', function () {
                 current = (current + 1) % videos.length;
                 player.src = videos[current].src;
                 title.textContent = videos[current].title;
                 desc.textContent = videos[current].description;
+                fullscreenRequested = false;
                 player.play();
-                tryFullscreen();
             });
             player.play();
-            tryFullscreen();
         </script>
     }
 </div>

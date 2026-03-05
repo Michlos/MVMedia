@@ -63,11 +63,43 @@
         </main>
     </div>
 
-@*     <footer class="border-top footer text-muted">
+    @*     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2026 - MVMedia.Web - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer> *@
+
+
+    @{
+        // var isAuthenticated = Context.Request.Cookies["AuthToken"] != null;
+    }
+    @if (isAuthenticated)
+    {
+        @* <div id="fullscreenPrompt" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;background:#000a;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+            Clique para iniciar em tela cheia
+        </div>
+        <script>
+            // Aguarda o DOM carregar para garantir que player e tryFullscreen existem
+            document.addEventListener('DOMContentLoaded', function() {
+                const prompt = document.getElementById('fullscreenPrompt');
+                prompt.addEventListener('click', function() {
+                    if (typeof tryFullscreen === 'function' && typeof player !== 'undefined') {
+                        tryFullscreen();
+                        player.play();
+                    }
+                    prompt.style.display = 'none';
+                });
+            });
+        </script> *@
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof tryFullscreen === 'function' && typeof player !== 'undefined') {
+                    tryFullscreen();
+                    player.play();
+                }
+            });
+        </script>
+    }
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
