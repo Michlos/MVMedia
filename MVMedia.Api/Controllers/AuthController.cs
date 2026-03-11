@@ -43,7 +43,16 @@ public class AuthController : ControllerBase
                 expires: DateTime.Now.AddHours(1),
                 signingCredentials: creds);
 
-            return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+            var isadmin = new JwtSecurityTokenHandler()
+                .ReadJwtToken(new JwtSecurityTokenHandler()
+                .WriteToken(token)).Claims
+                .FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value == "IsAdmin";
+
+            return Ok(new
+            {
+                token = new JwtSecurityTokenHandler().WriteToken(token),
+                isadmin = new JwtSecurityTokenHandler().ReadJwtToken(new JwtSecurityTokenHandler().WriteToken(token)).Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value == "IsAdmin"
+            });
         }
 
         return Unauthorized();

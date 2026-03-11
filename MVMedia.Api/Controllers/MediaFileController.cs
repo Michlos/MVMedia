@@ -7,6 +7,7 @@ using MVMedia.Api.Services.Interfaces;
 namespace MVMedia.Api.Controllers;
 
 
+//TODO: fazer o App.js logar na API
 
 [ApiController]
 [Route("api/[controller]")]
@@ -61,27 +62,27 @@ public class MediaFileController : ControllerBase
     [HttpGet("ListActiveMediaFiles")]
     public async Task<ActionResult<IEnumerable<MediaFile>>> ListActiveMediaFiles()
     {
-        ///AUTENTICANDO O USUÁRIO PARA RETORNAR APENAS OS ARQUIVOS DE MÍDIA DA EMPRESA DO USUÁRIO AUTENTICADO
-        //if (!User.Identity.IsAuthenticated)
-        //{
-        //    return Unauthorized("Usuário não autenticado.");
-        //}
-        //else
-        //{
-        //    var userId = User.GetUserId();
-        //    var user = await _userService.GetUser(userId);
+        // AUTENTICANDO O USUÁRIO PARA RETORNAR APENAS OS ARQUIVOS DE MÍDIA DA EMPRESA DO USUÁRIO AUTENTICADO
+        if (!User.Identity.IsAuthenticated)
+        {
+            return Unauthorized("Usuário não autenticado.");
+        }
+        else
+        {
+            var userId = User.GetUserId();
+            var user = await _userService.GetUser(userId);
 
-        //    var allMediaFiles = await _mediaFileService.GetAllMediaFiles();
-        //    var activeMediaFiles = allMediaFiles.Where(m => m.IsActive).ToList();
-        //    var filteredMediaFiles = activeMediaFiles.Where(m => m.CompanyId == user.CompanyId).ToList();
-        //    return Ok(filteredMediaFiles);
-        //}
+            var allMediaFiles = await _mediaFileService.GetAllMediaFiles();
+            var activeMediaFiles = allMediaFiles.Where(m => m.IsActive).ToList();
+            var filteredMediaFiles = activeMediaFiles.Where(m => m.CompanyId == user.CompanyId).ToList();
+            return Ok(filteredMediaFiles);
+        }
 
 
-        ///SEM AUTENTICAÇÃO, RETORNANDO TODOS OS ARQUIVOS DE MÍDIA ATIVOS
-        var allMediaFiles = await _mediaFileService.GetAllMediaFiles();
-        var activeMediaFiles = allMediaFiles.Where(m => m.IsActive).ToList();
-        return Ok(activeMediaFiles);
+        /////SEM AUTENTICAÇÃO, RETORNANDO TODOS OS ARQUIVOS DE MÍDIA ATIVOS
+        //var allMediaFiles = await _mediaFileService.GetAllMediaFiles();
+        //var activeMediaFiles = allMediaFiles.Where(m => m.IsActive).ToList();
+        //return Ok(activeMediaFiles);
 
 
 

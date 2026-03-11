@@ -6,7 +6,7 @@ public class MediaFileViewModel
 {
     [Key]
     public Guid Id { get; set; }
-    [Required]
+    
     [MaxLength(100)]
     public string Title { get; set; }
 

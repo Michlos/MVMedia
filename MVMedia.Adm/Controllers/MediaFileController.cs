@@ -30,7 +30,8 @@ public class MediaFileController : Controller
     public async Task<ActionResult> AddMediaFileClient(int clientId)
     {
         var client = await _clientService.GetClientById(clientId);
-        var mediaFileVM = new MediaFileViewModel { ClientId = client.Id, ClientName = client.Name };
+
+        var mediaFileVM = new MediaFileViewModel { ClientId = client.Id, ClientName = client.Name, CompanyId = client.CompanyId };
         return View("AddMediaFileClient", mediaFileVM);
     }
 

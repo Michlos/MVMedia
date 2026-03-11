@@ -28,6 +28,13 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
                             </li>
+                            @*Verifica o cooke isadmin*@
+                            @if (Context.Request.Cookies["IsAdmin"] == "true")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="Index">Company</a>
+                                </li>
+                            }
                             @* <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Medias" asp-action="Index">Medias</a>
                             </li> *@
@@ -42,6 +49,10 @@
                         }
                         else
                         {
+                            <li class="nav-item">
+                                @*IMPRIMIR O NOME DO USUÁRIO E SE ELE É ADMIM*@
+                                <span class="nav-link text-dark">@Context.Request.Cookies["Username"] (@(Context.Request.Cookies["IsAdmin"] == "true" ? "Admin" : "User"))</span>
+                            </li>
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
                                     <button type="submit" class="btn btn-link nav-link" style="display:inline; padding:0;">Logout</button>

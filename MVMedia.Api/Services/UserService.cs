@@ -63,4 +63,10 @@ public class UserService : IUserService
         var logedUser = await _userRepository.GetUser(userId);
         return logedUser != null && logedUser.IsAdmin && logedUser.IsActive;
     }
+
+    public async Task<int> GetCompanyId(int userId)
+    {
+        var logedUser = await _userRepository.GetUser(userId);
+        return logedUser != null ? logedUser.CompanyId : 0;
+    }
 }

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<MVMedia.Adm.Models.CompanyViewModel>
+@using MVMedia.Adm.Models
+
+<h2>Companies</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="fa-pull-left">
+            <a asp-action="AddCompany" class="btn btn-primary">
+                <span>+New Company</span>
+            </a>
+        </div>
+    </div>
+    <br />
+    <div class="panel panel-default">
+        @if (Model != null && Model.Any())  
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Id)</th>
+                        <th>@Html.DisplayNameFor(model => model.Name)</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>
+                                @* <a asp-action="CompanyDetail" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a> *@
+                            </td>
+                            <td>
+                                <a asp-action="UpdateCompany" asp-route-id="@item.Id" title="Edit" class="btn btn-warning">
+                                    <span class="fas fa-edit"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                Nenhuma compania cadastrada.
+            </div>
+        }
+    </div>

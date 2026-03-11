@@ -67,7 +67,12 @@ public class UserController : Controller
                 return BadRequest("Error creating user.");
 
             var token = _authenticateService.GenerateToken(user.Id, user.Login);
-            return new UserToken { Token = token };
+            var isAdmin = _authenticateService.GetUserByUserName(userDTO.Login).Result.IsAdmin;
+            return new UserToken
+            {
+                Token = token,
+                IsAdmin = isAdmin
+            };
         }
 
 
@@ -88,10 +93,12 @@ public class UserController : Controller
         var user = await _authenticateService.GetUserByUserName(loginModel.Username);
 
         var token = _authenticateService.GenerateToken(user.Id, user.Login);
+        var isAdmin = _authenticateService.GetUserByUserName(loginModel.Username).Result.IsAdmin;
 
         return new UserToken
         {
-            Token = token
+            Token = token,
+            IsAdmin = isAdmin
         };
     }
 

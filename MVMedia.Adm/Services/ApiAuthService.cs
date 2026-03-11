@@ -12,7 +12,7 @@ public class ApiAuthService
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task<string?> LoginAsync(string username, string password)
+    public async Task<UserToken?> LoginAsync(string username, string password)
     {
         var client = _httpClientFactory.CreateClient("MVMediaAPI");
         var loginData = new { Username = username, Password = password };
@@ -22,11 +22,14 @@ public class ApiAuthService
             return null;
 
         var result = await response.Content.ReadFromJsonAsync<UserToken>();
-        return result?.Token;
+        return result;
     }
+
+
 }
 
 public class UserToken
 {
     public string? Token { get; set; }
+    public bool IsAdmin { get; set; }
 }

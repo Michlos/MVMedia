@@ -28,36 +28,66 @@ public class ClientController : Controller
     public async Task<ActionResult<IEnumerable<Client>>> GetAllClients()
     {
 
+        ////CÓDIGO NOVO
+        //1. verificaçãod e autorização simplificada
+        var userId = User.GetUserId();
+        var isAdmin = await _userService.IsAdmin(userId);
+        var companyId = await _userService.GetCompanyId(userId);
+        if (userId == 0)
+            return Unauthorized("You are not authenticated to access this resource");
 
-        if (!await _userService.IsAdmin(User.GetUserId()))
-            return Unauthorized("You are not authorized to access this resource");
-
+        //2. Busca de cados
         var clients = await _clientService.GetAllClients();
-        if (clients.Any())
+        if (!clients.Any())
         {
-            var users = await _userService.GetAllUsers();
-            if (users.Any())
-            {
-                if (!User.Identity?.IsAuthenticated ?? false)
-                    return Unauthorized("You are not authenticated to access this resource");
-
-                var userId = User.GetUserId();
-                var user = await _userService.GetUser(userId);
-                if (user == null)
-                    return Unauthorized("User not found");
-
-                var filteredClients = clients.Where(c => c.CompanyId == user.CompanyId).ToList();
-                return Ok(filteredClients);
-            }
+            var listClients = new List<Client>();
+            return Ok(listClients);
         }
-        return Ok(clients);
+
+        //3. Filtra os clientes pela empresa do usuário
+        if (!isAdmin)
+        {
+            var filteredClients = clients.Where(c => c.CompanyId == companyId).ToList();
+            return Ok(filteredClients);
+        }
+        else
+        {
+            return Ok(clients);
+        }
+
+        ////CÓDIGO ANTERIOR
+        //if (!await _userService.IsAdmin(User.GetUserId()))
+        //    return Unauthorized("You are not authorized to access this resource");
+
+        //var clients = await _clientService.GetAllClients();
+        //if (clients.Any())
+        //{
+        //    var users = await _userService.GetAllUsers();
+        //    if (users.Any())
+        //    {
+        //        if (!User.Identity?.IsAuthenticated ?? false)
+        //            return Unauthorized("You are not authenticated to access this resource");
+
+        //        var userId = User.GetUserId();
+        //        var user = await _userService.GetUser(userId);
+        //        if (user == null)
+        //            return Unauthorized("User not found");
+
+        //        var filteredClients = clients.Where(c => c.CompanyId == user.CompanyId).ToList();
+        //        if (filteredClients.Any())
+        //            return Ok(filteredClients);
+        //    }
+        //}
+        //return Ok(clients);
 
     }
     [HttpGet("GetClient/{id}")]
     public async Task<ActionResult<Client>> GetClientById(int id)
     {
-        if (!await _userService.IsAdmin(User.GetUserId()))
-            return Unauthorized("You are not authorized to access this resource");
+        //if (!await _userService.IsAdmin(User.GetUserId()))
+        //    return Unauthorized("You are not authorized to access this resource");
+
+        
 
         var clientUpdated = await _clientService.GetClientById(id);
         if (clientUpdated == null)
@@ -96,10 +126,10 @@ public class ClientController : Controller
         var existingClient = await _clientService.GetClientById(clientDTO.Id);
         if (existingClient == null)
             return NotFound($"Client with id {clientDTO.Id} not found!");
-        
+
         if (clientDTO == null)
             return BadRequest("Invalid client data");
-        
+
         await _clientService.UpdateClient(clientDTO);
 
         return Ok(clientDTO);

@@ -76,7 +76,7 @@ public class CompanyController : Controller
         return Ok(company);
     }
 
-    [HttpPost("AddCompany")]
+    [HttpPost]
     public async Task<ActionResult> AddCompany(CompanyAddDTO company)
     {
         //EXIST COMPANY
@@ -104,9 +104,18 @@ public class CompanyController : Controller
         if (!await _userService.IsAdmin(User.GetUserId()))
             return Unauthorized("You are not authorized to access this resource.");
 
+        if(companyDTO.Id == 0)
+            return BadRequest("Company ID is required for update.");
+
+        var existingCompany = await _companyService.GetCompanyById(companyDTO.Id);
+        if (existingCompany == null)
+            return NotFound("Company not found.");
+
         var updatedCompany = await _companyService.UpdateCompany(companyDTO);
+
         if (updatedCompany == null)
             return NotFound("Company not found.");
+
         return Ok(updatedCompany);
     }
 

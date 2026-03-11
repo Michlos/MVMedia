@@ -1,79 +1,60 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { useState, useEffect } from 'react';
-
-function DataFetcher() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    // >>> Ajuste da URL da sua API <<<
-    fetch('http://localhost:5069/api/MediaFile/ListActiveMediaFiles')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`Erro HTTP: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(json => {
-        // json deve ser um array igual ao response que você mostrou
-        // Aqui filtramos só os campos que você quer
-        const somenteCamposNecessarios = json.map(item => ({
-          title: item.title,
-          description: item.description,
-          fileName: item.fileName
-        }));
-
-        setData(somenteCamposNecessarios);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error('Erro:', error);
-        setError(error.message);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) return <p>Carregando mídias...</p>;
-  if (error) return <p>Erro ao carregar mídias: {error}</p>;
-
-  return (
-    <div>
-      <h2>Lista de Mídias Ativas</h2>
-      <ul style={{ textAlign: 'left', maxWidth: '600px' }}>
-        {data.map(item => (
-          <li key={item.fileName} style={{ marginBottom: '16px' }}>
-            <strong>Título:</strong> {item.title}<br />
-            <strong>Descrição:</strong> {item.description}<br />
-            <strong>Arquivo:</strong> {item.fileName}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+import Login from './Login';
+// 1. Importe o componente externo (certifique-se que o caminho está correto)
+import { MediaPlayer } from './MediaPlayer'; 
 
 function App() {
+  // Estado para controlar se o usuário está logado
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
+
+  // Efeito para monitorar o localStorage (opcional, melhora a experiência)
+  useEffect(() => {
+    
+    //TRATA ERRO DE "bROKEN pIPE" (epipe) COMUNS EM TVS
+    const handleGlogalError = (error) => {
+      if(error && error.message && error.message.includes('EPIPE')){
+        return; //IGNORA SILENCIOSAMENTE E NÃO TRAVA A TV
+      }
+    };
+
+    window.addEventListener('error', handleGlogalError);
+    window.addEventListener('unhandledrejection', handleGlogalError);
+
+    //se estiver usando eletroni, tenta acessar o process global com segurança
+    if(window.process){
+      window.process.on('uncaughtException', handleGlogalError);
+    }
+
+    const checkToken = () => {
+      setIsLoggedIn(!!localStorage.getItem('token'));
+    };
+    
+    // Escuta mudanças no storage para atualizar o App se o usuário deslogar/logar
+    window.addEventListener('storage', checkToken);
+    return () => window.removeEventListener('storage', checkToken);
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          TESTE DE SITE DO GERADOR DE MÍDIA DO MIKE E DO VITOR
-        </p>
+        
+        {/* 2. Mostra o Login sempre, ou você pode fazer um condicional aqui também */}
+        <Login />
 
-        {/* Aqui você usa o DataFetcher para mostrar as mídias da API */}
-        <DataFetcher />
+        
 
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {/* 3. Lógica condicional: Só renderiza o MediaPlayer se houver um token */}
+        {isLoggedIn ? (
+          <div style={{ width: '100%' }}>
+            <MediaPlayer />
+          </div>
+        ) : (
+          <p>Por favor, faça login para visualizar os vídeos.</p>
+        )}
+
+       
       </header>
     </div>
   );

@@ -10,4 +10,6 @@ public interface IUserService
     Task<IEnumerable<UserDTO>> GetAllUsers();
     Task<bool> UserAutorized(int userId);
     Task<bool> IsAdmin(int userId);
+
+    Task<int> GetCompanyId(int userId);
 }

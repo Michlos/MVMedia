@@ -355,9 +355,19 @@ healthchecksdb
 
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
+*.zip
+*.7z
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+#Ignore webOS
+webOS_TV_25/
+/webOS_TV_25/
+./webOS_TV_25
+./webOS_TV_25/
+webOS_TV_25/
+Videos/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
@@ -365,3 +375,10 @@ FodyWeavers.xsd
 *.m3u
 /MVMedia.Web/Views/Home/Index.cshtml
 /MVMedia.sln
+
+
+#Ignore backups and descontined folders local
+MVMedia.Web.BKP/
+MVMedia.Web.BKP2/
+MVMedia.Desk/
+MVMedia.TV/

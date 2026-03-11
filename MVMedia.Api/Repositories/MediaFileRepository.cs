@@ -10,12 +10,12 @@ namespace MVMedia.Api.Repositories;
 public class MediaFileRepository : IMediaFileRepository
 {
     private readonly ApiDbContext _context;
-    private readonly VideoSettings _videoSettings;
+    //private readonly VideoSettings _videoSettings;
 
-    public MediaFileRepository(ApiDbContext context, VideoSettings mediaSettings)
+    public MediaFileRepository(ApiDbContext context)
     {
         _context = context;
-        _videoSettings = mediaSettings;
+        //_videoSettings = mediaSettings;
     }
 
     public async Task<MediaFile> AddMediaFile(MediaFile mediaFile)
@@ -33,7 +33,8 @@ public class MediaFileRepository : IMediaFileRepository
             return false;
 
         //var filePath = Path.Combine(Directory.GetCurrentDirectory(), mediaFile.FilePath);
-        var filePath = Path.Combine(Directory.GetCurrentDirectory(), _videoSettings.VideoPath, mediaFile.FileName);
+        //var filePath = Path.Combine(Directory.GetCurrentDirectory(), _videoSettings.VideoPath, mediaFile.FileName);
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), mediaFile.FileName);
 
 
         if (File.Exists(filePath))
@@ -78,7 +79,7 @@ public class MediaFileRepository : IMediaFileRepository
         // Se o nome do arquivo foi alterado, apaga o arquivo antigo do servidor
         if (mediaFile.FileName != null && mediaFile.FileName != oldFileName)
         {
-            var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), _videoSettings.VideoPath, oldFileName);
+            var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(),  oldFileName);
             if (File.Exists(oldFilePath))
             {
                 File.Delete(oldFilePath);
