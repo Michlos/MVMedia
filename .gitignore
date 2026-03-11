@@ -363,10 +363,6 @@ MigrationBackup/
 
 #Ignore webOS
 webOS_TV_25/
-/webOS_TV_25/
-./webOS_TV_25
-./webOS_TV_25/
-webOS_TV_25/
 Videos/
 
 # Fody - auto-generated XML schema
