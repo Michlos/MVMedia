@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:5069', // Base URL da sua API
+    baseURL: 'http://mvmediaapi.railway.internal:5069', // Base URL da sua API
 });
 
-//const API_BASE_URL = 'http://localhost:5069'; // Base URL da sua API
+//const API_BASE_URL = 'http://mvmediaapi.railway.internal:5069'; // Base URL da sua API
 //adiona um ternrceptador de requisição;
 api.interceptors.request.use(
     (config) => {
@@ -20,4 +20,4 @@ api.interceptors.request.use(
 );
 
 export default api;
-export const baseURL = 'http://localhost:5069'; // Base URL da sua API
+export const baseURL = 'http://mvmediaapi.railway.internal:5069'; // Base URL da sua API

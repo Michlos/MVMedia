@@ -5,6 +5,7 @@ using System.Text.Json;
 
 namespace MVMedia.Adm.Services;
 
+
 public class CompanyService : ICompanyService
 {
     private readonly IHttpClientFactory _clientFactory;
@@ -84,15 +85,13 @@ public class CompanyService : ICompanyService
     public async Task<CompanyViewModel> UpdateCompany(CompanyViewModel companyVM)
     {
         var client = _clientFactory.CreateClient("MVMediaAPI");
-        CompanyViewModel companyUpdated = new CompanyViewModel();
-
+        
         using (var response = await client.PutAsJsonAsync(apiEndpoint, companyVM))
         {
             if(response.IsSuccessStatusCode)
             {
                 var apiResponse = await response.Content.ReadAsStringAsync();
-                companyUpdated = JsonSerializer
-                    .Deserialize<CompanyViewModel>(apiResponse, _options);
+                companyVM = JsonSerializer.Deserialize<CompanyViewModel>(apiResponse, _options);
             }
             else
             {
@@ -100,6 +99,7 @@ public class CompanyService : ICompanyService
             }
         }
 
-        return companyUpdated;
+        return companyVM;
     }
+
 }

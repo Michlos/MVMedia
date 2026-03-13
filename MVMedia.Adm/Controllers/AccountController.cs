@@ -6,7 +6,9 @@ namespace MVMedia.Adm.Controllers;
 
 public class AccountController : Controller
 {
+    //for autentication
     private readonly ApiAuthService _apiAuthService;
+
 
     public AccountController(ApiAuthService apiAuthService)
     {

@@ -2,7 +2,7 @@
 {
     public class ClientWithMediaFileDTO
     {
-        public ClientSummaryDTO Client { get; set; }
-        public List<MediaFileLIstItemDTO> MediaFiles { get; set; }
+        public required ClientSummaryDTO Client { get; set; }
+        public List<MediaFileLIstItemDTO>? MediaFiles { get; set; }
     }
 }

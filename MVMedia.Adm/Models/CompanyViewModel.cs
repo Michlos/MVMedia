@@ -10,29 +10,29 @@ public class CompanyViewModel
 
     [Required]
     [MaxLength(200)]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     [Required]
     [MaxLength(18)]
     [DataType(DataType.Text)]
-    public string CNPJ { get; set; }
+    public required string CNPJ { get; set; }
 
     [Required]
     [EmailAddress(ErrorMessage = "Invalid Email Address")]
-    public string Email { get; set; }
+    public required string Email { get; set; }
 
     [Required]
     [MaxLength(15)]
-    public string Phone { get; set; }
+    public required string Phone { get; set; }
     
     [MaxLength(255)]
-    public string Address { get; set; }
+    public required string Address { get; set; }
 
     [MaxLength(90)]
-    public string City { get; set; }
+    public required string City { get; set; }
 
     [MaxLength(2)]
-    public string State { get; set; }
+    public required string State { get; set; }
 
     [MaxLength(10)]
     [RegularExpression(@"^\d{5}-\d{3}$", ErrorMessage = "Invalid Zip Code format. Use XXXXX-XXX.")]

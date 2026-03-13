@@ -22,7 +22,7 @@ builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IMediaService, MediaService>();
 builder.Services.AddScoped<IMediaFileService, MediaFileService>();
 builder.Services.AddScoped<IMediaListService, MediaListService>();
-builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<ICompanyService, MVMedia.Adm.Services.CompanyService>();
 builder.Services.AddScoped<ApiAuthService>();
 
 //ADD SERVICES AUTOMAPPER
