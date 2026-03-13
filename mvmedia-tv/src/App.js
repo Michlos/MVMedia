@@ -1,18 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { useState, useEffect } from 'react';
 import Login from './Login';
 // 1. Importe o componente externo (certifique-se que o caminho está correto)
 import { MediaPlayer } from './MediaPlayer'; 
+import useNavigation from './hook/use-navigation';
 
 function App() {
   // Estado para controlar se o usuário está logado
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
 
+
+  useNavigation({isActive: true});
   // Efeito para monitorar o localStorage (opcional, melhora a experiência)
   useEffect(() => {
     
-    //TRATA ERRO DE "bROKEN pIPE" (epipe) COMUNS EM TVS
+    //TRATA ERRO DE "BROKEN PIPE" (EPIPE) COMUNS EM TVS
     const handleGlogalError = (error) => {
       if(error && error.message && error.message.includes('EPIPE')){
         return; //IGNORA SILENCIOSAMENTE E NÃO TRAVA A TV

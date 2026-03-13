@@ -9,7 +9,7 @@ namespace MVMedia.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-//[Authorize]
+[Authorize]
 
 public class CompanyController : Controller
 {
@@ -88,6 +88,7 @@ public class CompanyController : Controller
 
             if (!await _userService.IsAdmin(User.GetUserId()))
                 return Unauthorized("You are not authorized to access this resource.");
+
             var addedCompany = await _companyService.AddCompany(company);
             return CreatedAtAction(nameof(GetCompanyById), new { id = addedCompany.Id }, addedCompany);
         }

@@ -16,7 +16,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 //CONNECSTION STRING CONFIGURATION
-var PostgreSqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+///CONNECTION IN HOMOLOGATION
+//var PostgreSqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+///CONNECTION IN PRD - RAILWAY
+var PostgreSqlConnection = builder.Configuration.GetConnectionString("PRDConnection");
 builder.Services.AddDbContext<ApiDbContext>(opt => opt.UseNpgsql(PostgreSqlConnection));
 
 //DEPENDENCE INJECTION FRO REPOSITORIES AND SERVICES

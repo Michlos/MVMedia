@@ -7,16 +7,9 @@ using System.IO;
 
 namespace MVMedia.Api.Repositories;
 
-public class MediaFileRepository : IMediaFileRepository
+public class MediaFileRepository(ApiDbContext context) : IMediaFileRepository
 {
-    private readonly ApiDbContext _context;
-    //private readonly VideoSettings _videoSettings;
-
-    public MediaFileRepository(ApiDbContext context)
-    {
-        _context = context;
-        //_videoSettings = mediaSettings;
-    }
+    private readonly ApiDbContext _context = context;
 
     public async Task<MediaFile> AddMediaFile(MediaFile mediaFile)
     {
@@ -66,9 +59,9 @@ public class MediaFileRepository : IMediaFileRepository
 
     public async Task<MediaFile> UpdateMediaFile(MediaFile mediaFile, string oldFileName)
     {
-        var existingMediaFile = await GetMediaFileById(mediaFile.Id);
-        if (existingMediaFile == null)
-            throw new ArgumentException($"MediaFile with Id {mediaFile.Id} not found.");
+        var existingMediaFile 
+            = await GetMediaFileById(mediaFile.Id) 
+            ?? throw new ArgumentException($"MediaFile with Id {mediaFile.Id} not found.");
 
         // ATUALIZA OS CAMPOS NECESSÁRIOS
         if (mediaFile.Title != null && mediaFile.Title != existingMediaFile.Title)
